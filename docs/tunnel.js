@@ -4,6 +4,13 @@ canvas.height = document.body.clientHeight; //document.height is obsolete
 canvasW = canvas.width;
 canvasH = canvas.height;
 var ctx = canvas.getContext('2d');
+var raf;
+var currMouse;
+var counter = 0;
+var running = false;
+var freq = 0.2;
+var colorDelta = 8;
+var counterStep = 5;
 
 var getColor = function(){
   // https://krazydad.com/tutorials/makecolors.php
@@ -26,38 +33,47 @@ var getColor = function(){
     return RGB2Color(red,grn,blu);
   }
   function getColor(counter){
-    return makeColorGradient(.3, .3, .3, 0, 2, 4, counter);
+    return makeColorGradient(freq, freq, freq, 0, 2, 4, counter);
   }
   return getColor;
 }();
 
-function getMousePos(canvas, evt) {
+function getMousePos(evt) {
   var rect = canvas.getBoundingClientRect();
   return {
     x: evt.clientX - rect.left,
     y: evt.clientY - rect.top
   };
 }
-function addRainbow(g, cycle, cOffset){
-  g.addColorStop(0, getColor(cOffset));
-  g.addColorStop(1, getColor(cOffset+5));
+function addRainbow(g, step){
+  g.addColorStop(0, getColor(step));
+  g.addColorStop(1, getColor(step+colorDelta));
 }
-function drawCircle(x, y, counter){
-  var gradient = ctx.createRadialGradient(x, y, 0, x, y, canvasW);
-  var xCol = Math.floor(counter/40);
-  addRainbow(gradient, 2, xCol);
+function draw(){
+  counter = (counter + 1) % 1000000;
+  var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, canvasW);
+  var step = Math.floor(counter / counterStep);
+  addRainbow(gradient, step);
   ctx.fillStyle = gradient;
   ctx.fillRect(0,0,canvasW,canvasH);
+
+  raf = window.requestAnimationFrame(draw);
 }
 
-var counter = 0;
-var lastMouse = null;
 document.onmousemove = function (e) {
-  var currMouse = getMousePos(canvas, e);
-  lastMouse = lastMouse || currMouse;
-  counter += Math.abs(lastMouse.x - currMouse.x);
-  counter += Math.abs(lastMouse.y - currMouse.y);
-  counter = counter % 100000;
-  lastMouse = currMouse;
-  drawCircle(currMouse.x, currMouse.y, counter);
+  currMouse = getMousePos(e);
 };
+canvas.addEventListener('click', function(e) {
+  if (!running) {
+    currMouse = getMousePos(e);
+    raf = window.requestAnimationFrame(draw);
+    running = true;
+  }
+});
+
+function run(){
+  running = true;
+  currMouse = {x:0, y:0};
+  raf = window.requestAnimationFrame(draw);
+}
+run()
