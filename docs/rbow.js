@@ -1,5 +1,5 @@
 
-function NewRainbow(freq, colorDelta){
+function NewRainbow(){
   // https://krazydad.com/tutorials/makecolors.php
   function byte2Hex(n)
   {
@@ -21,20 +21,29 @@ function NewRainbow(freq, colorDelta){
   }
 
   var self = {};
-  self.freq = freq || 0.2;
-  self.colorDelta = colorDelta || 8;
+  self.freq = 0.2;
+  self.gradientDelta = 8;
+  self.stepFreq = 5;
+  self.counter = 0;
 
   function getAtStep(step){
     return makeColorGradient(self.freq, self.freq, self.freq, 0, 2, 4, step);
   }
 
-  function getGradient(step, delta){
+  function getGradientAtStep(step, delta){
     return [
       getAtStep(step),
       getAtStep(step+delta),
     ];
   }
-  self.getGradient = getGradient;
+
+  function nextGradient(){
+    self.counter = (self.counter + 1) % 1000000;
+    var step = Math.floor(self.counter / self.stepFreq);
+    return getGradientAtStep(step, self.gradientDelta);
+  }
+
+  self.nextGradient = nextGradient;
   return self;
 };
 

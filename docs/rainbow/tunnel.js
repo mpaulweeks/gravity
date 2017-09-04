@@ -7,10 +7,8 @@ canvasH = canvas.height;
 var ctx = canvas.getContext('2d');
 var raf;
 var currMouse;
-var counter = 0;
 var running = false;
-var counterStep = 5;
-var rbow = NewRainbow(0.2, 8);
+var rbow = NewRainbow();
 
 function getMousePos(evt) {
   // https://stackoverflow.com/a/17130415/6461842
@@ -20,16 +18,14 @@ function getMousePos(evt) {
     y: evt.clientY - rect.top
   };
 }
-function addRainbow(g, step){
-  var colors = rbow.getGradient(step);
+function addRainbow(g){
+  var colors = rbow.nextGradient();
   g.addColorStop(0, colors[0]);
   g.addColorStop(1, colors[1]);
 }
 function draw(){
-  counter = (counter + 1) % 1000000;
   var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, canvasW);
-  var step = Math.floor(counter / counterStep);
-  addRainbow(gradient, step);
+  addRainbow(gradient);
   ctx.fillStyle = gradient;
   ctx.fillRect(0,0,canvasW,canvasH);
 
