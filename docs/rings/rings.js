@@ -33,13 +33,13 @@ function NewRing(coord, maxRadius){
     gradient.addColorStop(0, getGradient(inner));
     gradient.addColorStop(1, getGradient(outer));
 
-    ctx.fillStyle = gradient;
-    ctx.fillRect(
-      self.origin.x - outer,
-      self.origin.y - outer,
-      outer * 2,
-      outer * 2,
-    );
+    // https://stackoverflow.com/a/43433877/6461842
+
+    ctx.beginPath();
+    ctx.arc(self.origin.x, self.origin.y, inner, 0, 2*Math.PI);
+    ctx.lineWidth = outer - inner;
+    ctx.strokeStyle = gradient;
+    ctx.stroke();
   }
   self.drawRing = drawRing;
 
