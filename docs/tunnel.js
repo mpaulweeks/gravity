@@ -5,6 +5,32 @@ canvasW = canvas.width;
 canvasH = canvas.height;
 var ctx = canvas.getContext('2d');
 
+var getColor = function(){
+  // https://krazydad.com/tutorials/makecolors.php
+  function byte2Hex(n)
+  {
+    var nybHexString = "0123456789ABCDEF";
+    return String(nybHexString.substr((n >> 4) & 0x0F,1)) + nybHexString.substr(n & 0x0F,1);
+  }
+  function RGB2Color(r,g,b){
+    return '#' + byte2Hex(r) + byte2Hex(g) + byte2Hex(b);
+  }
+  function makeColorGradient(frequency1, frequency2, frequency3,
+                             phase1, phase2, phase3,
+                             i){
+    var center = 128;
+    var width = 127;
+    var red = Math.sin(frequency1*i + phase1) * width + center;
+    var grn = Math.sin(frequency2*i + phase2) * width + center;
+    var blu = Math.sin(frequency3*i + phase3) * width + center;
+    return RGB2Color(red,grn,blu);
+  }
+  function getColor(counter){
+    return makeColorGradient(.3, .3, .3, 0, 2, 4, counter);
+  }
+  return getColor;
+}();
+
 function getMousePos(canvas, evt) {
   var rect = canvas.getBoundingClientRect();
   return {
@@ -12,16 +38,9 @@ function getMousePos(canvas, evt) {
     y: evt.clientY - rect.top
   };
 }
-var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo'];
 function addRainbow(g, cycle, cOffset){
-  cycle = cycle || 1;
-  cOffset = cOffset || 0;
-  for (var i = 0; i < cycle; i++){
-    for (var c = 0; c < colors.length; c++){
-      var cid = (c + cOffset) % colors.length;
-      g.addColorStop((i/cycle) + (c / (colors.length * cycle)), colors[cid]);
-    }
-  }
+  g.addColorStop(0, getColor(cOffset));
+  g.addColorStop(1, getColor(cOffset+5));
 }
 function drawCircle(x, y, counter){
   var gradient = ctx.createRadialGradient(x, y, 0, x, y, canvasW);
