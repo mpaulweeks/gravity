@@ -127,8 +127,10 @@ function NewCanvas(){
   }
 
   return {
+    getMousePos: getMousePos,
     drawTriangles: drawTriangles,
     drawCircle: drawCircle,
+    ctx: ctx,
   };
 }
 
