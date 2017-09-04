@@ -12,58 +12,33 @@ function getMousePos(canvas, evt) {
     y: evt.clientY - rect.top
   };
 }
-function addRainbow(g){
-  g.addColorStop(0, 'red');
-  g.addColorStop(1 / 6, 'orange');
-  g.addColorStop(2 / 6, 'yellow');
-  g.addColorStop(3 / 6, 'green');
-  g.addColorStop(4 / 6, 'blue');
-  g.addColorStop(5 / 6, 'indigo');
-  g.addColorStop(1, 'violet');
+var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo'];
+function addRainbow(g, cycle, cOffset){
+  cycle = cycle || 1;
+  cOffset = cOffset || 0;
+  for (var i = 0; i < cycle; i++){
+    for (var c = 0; c < colors.length; c++){
+      var cid = (c + cOffset) % colors.length;
+      g.addColorStop((i/cycle) + (c / (colors.length * cycle)), colors[cid]);
+    }
+  }
 }
-function draw(x, y){
-  var gradient = ctx.createLinearGradient(0, 0, x, 0);
-  addRainbow(gradient);
+function drawCircle(x, y, counter){
+  var gradient = ctx.createRadialGradient(x, y, 0, x, y, canvasW);
+  var xCol = Math.floor(counter/40);
+  addRainbow(gradient, 2, xCol);
   ctx.fillStyle = gradient;
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.lineTo(x, y);
-  ctx.lineTo(0, canvasH);
-  ctx.closePath();
-  ctx.fill();
-
-  gradient = ctx.createLinearGradient(canvasW, 0, x, 0);
-  addRainbow(gradient);
-  ctx.fillStyle = gradient;
-  ctx.beginPath();
-  ctx.moveTo(canvasW, 0);
-  ctx.lineTo(x, y);
-  ctx.lineTo(canvasW, canvasH);
-  ctx.closePath();
-  ctx.fill();
-
-  gradient = ctx.createLinearGradient(0, 0, 0, y);
-  addRainbow(gradient);
-  ctx.fillStyle = gradient;
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.lineTo(x, y);
-  ctx.lineTo(canvasW, 0);
-  ctx.closePath();
-  ctx.fill();
-
-  gradient = ctx.createLinearGradient(0, canvasH, 0, y);
-  addRainbow(gradient);
-  ctx.fillStyle = gradient;
-  ctx.beginPath();
-  ctx.moveTo(0, canvasH);
-  ctx.lineTo(x, y);
-  ctx.lineTo(canvasW, canvasH);
-  ctx.closePath();
-  ctx.fill();
+  ctx.fillRect(0,0,canvasW,canvasH);
 }
 
+var counter = 0;
+var lastMouse = null;
 document.onmousemove = function (e) {
-  var coord = getMousePos(canvas, e);
-  draw(coord.x, coord.y);
+  var currMouse = getMousePos(canvas, e);
+  lastMouse = lastMouse || currMouse;
+  counter += Math.abs(lastMouse.x - currMouse.x);
+  counter += Math.abs(lastMouse.y - currMouse.y);
+  counter = counter % 100000;
+  lastMouse = currMouse;
+  drawCircle(currMouse.x, currMouse.y, counter);
 };
