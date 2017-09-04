@@ -1,3 +1,4 @@
+// https://stackoverflow.com/a/4037426/6461842
 var canvas = document.getElementById('canvas');
 canvas.width = document.body.clientWidth; //document.width is obsolete
 canvas.height = document.body.clientHeight; //document.height is obsolete
@@ -39,6 +40,7 @@ var getColor = function(){
 }();
 
 function getMousePos(evt) {
+  // https://stackoverflow.com/a/17130415/6461842
   var rect = canvas.getBoundingClientRect();
   return {
     x: evt.clientX - rect.left,
