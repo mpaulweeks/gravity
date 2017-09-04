@@ -23,7 +23,7 @@ function NewRainbow(){
   var self = {};
   self.freq = 0.2;
   self.gradientDelta = 8;
-  self.stepFreq = 5;
+  self.stepFreq = 5; // 5 for circles, 20 for triangles
   self.counter = 0;
 
   function getAtStep(step){
@@ -54,6 +54,7 @@ function NewCanvas(){
   canvas.height = document.body.clientHeight; //document.height is obsolete
   canvasW = canvas.width;
   canvasH = canvas.height;
+  var maxLength = canvasW > canvasH ? canvasW : canvasH;
   var ctx = canvas.getContext('2d');
   var currMouse = {
     x: Math.floor(canvasW/2),
@@ -73,13 +74,60 @@ function NewCanvas(){
   };
 
   function drawCircle(gradientModifier){
-    var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, canvasW);
+    var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength);
     gradientModifier(gradient);
     ctx.fillStyle = gradient;
     ctx.fillRect(0,0,canvasW,canvasH);
   }
 
+  function drawTriangles(gradientModifier){
+    var x = currMouse.x;
+    var y = currMouse.y;
+    var gradient;
+
+    gradient = ctx.createLinearGradient(0, 0, x, 0);
+    gradientModifier(gradient);
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(x, y);
+    ctx.lineTo(0, canvasH);
+    ctx.closePath();
+    ctx.fill();
+
+    gradient = ctx.createLinearGradient(canvasW, 0, x, 0);
+    gradientModifier(gradient);
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(canvasW, 0);
+    ctx.lineTo(x, y);
+    ctx.lineTo(canvasW, canvasH);
+    ctx.closePath();
+    ctx.fill();
+
+    gradient = ctx.createLinearGradient(0, 0, 0, y);
+    gradientModifier(gradient);
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(x, y);
+    ctx.lineTo(canvasW, 0);
+    ctx.closePath();
+    ctx.fill();
+
+    gradient = ctx.createLinearGradient(0, canvasH, 0, y);
+    gradientModifier(gradient);
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, canvasH);
+    ctx.lineTo(x, y);
+    ctx.lineTo(canvasW, canvasH);
+    ctx.closePath();
+    ctx.fill();
+  }
+
   return {
+    drawTriangles: drawTriangles,
     drawCircle: drawCircle,
   };
 }
