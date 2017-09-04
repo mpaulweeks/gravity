@@ -7,7 +7,7 @@ function NewRing(coord, maxRadius){
   var self = {};
   self.origin = coord;
   self.maxRadius = maxRadius;
-  self.radius = 10;
+  self.radius = 50;
 
   function byte2Hex(n)
   {
@@ -21,13 +21,13 @@ function NewRing(coord, maxRadius){
   function getGradient(r){
     var progress = (r / self.maxRadius);
     var c = 205 + Math.floor(50 * (1 - progress));
-    console.log(c);
     return `rgba(${c},${c},${c},0.5)`;
   }
 
   function drawRing(ctx){
     var outer = self.radius;
-    var inner = outer - Math.floor(outer * 0.1);
+    var width = 50;
+    var inner = outer - width;
     var gradient = ctx.createRadialGradient(self.origin.x, self.origin.y, inner, self.origin.x, self.origin.y, outer);
 
     gradient.addColorStop(0, getGradient(inner));
@@ -37,18 +37,22 @@ function NewRing(coord, maxRadius){
 
     ctx.beginPath();
     ctx.arc(self.origin.x, self.origin.y, inner, 0, 2*Math.PI);
-    ctx.lineWidth = outer - inner;
+    ctx.lineWidth = width;
     ctx.strokeStyle = gradient;
     ctx.stroke();
   }
   self.drawRing = drawRing;
 
   function step(){
-    self.radius += 10;
-    console.log(self.radius);
+    self.radius += 5;
     return self.radius >= self.maxRadius;
   }
   self.step = step;
+
+  function isDead(){
+    return self.radius >= self.maxRadius;
+  }
+  self.isDead = isDead;
 
   return self;
 }
@@ -61,14 +65,21 @@ function addRainbow(g){
 }
 function draw(){
   cvas.drawCircle(addRainbow);
+  // cvas.drawTriangles(addRainbow);
 
-  var shouldPop = false;
+  var shouldCheck = false;
   rings.forEach(function(ring){
     ring.drawRing(cvas.ctx);
-    shouldPop = shouldPop || ring.step();
+    shouldCheck = shouldCheck || ring.step();
   });
-  if (shouldPop){
-    rings = [];
+  if (shouldCheck){
+    var newRings = [];
+    rings.forEach(function(ring){
+      if (!ring.isDead()){
+        newRings.push(ring);
+      }
+    });
+    rings = newRings;
   }
 
   raf = window.requestAnimationFrame(draw);
