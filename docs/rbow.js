@@ -47,3 +47,40 @@ function NewRainbow(){
   return self;
 };
 
+function NewCanvas(){
+  // https://stackoverflow.com/a/4037426/6461842
+  var canvas = document.getElementById('canvas');
+  canvas.width = document.body.clientWidth; //document.width is obsolete
+  canvas.height = document.body.clientHeight; //document.height is obsolete
+  canvasW = canvas.width;
+  canvasH = canvas.height;
+  var ctx = canvas.getContext('2d');
+  var currMouse = {
+    x: Math.floor(canvasW/2),
+    y: Math.floor(canvasH/2),
+  };
+
+  function getMousePos(evt) {
+    // https://stackoverflow.com/a/17130415/6461842
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+  }
+  document.onmousemove = function (e) {
+    currMouse = getMousePos(e);
+  };
+
+  function drawCircle(gradientModifier){
+    var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, canvasW);
+    gradientModifier(gradient);
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0,0,canvasW,canvasH);
+  }
+
+  return {
+    drawCircle: drawCircle,
+  };
+}
+
