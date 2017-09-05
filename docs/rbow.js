@@ -155,42 +155,45 @@ function NewCanvas(){
   function drawRipple(gm1, gm2){
     var x = currMouse.x;
     var y = currMouse.y;
-    var xchunk = Math.floor(canvasW/2);
-    var ychunk = Math.floor(canvasH/2);
     var g1 = gm1(ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength));
     var g2 = gm2(ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength));
+    var numSpikes = 2;
+    var xchunk = Math.floor(canvasW/(2*numSpikes));
+    var ychunk = Math.floor(canvasH/(2*numSpikes));
 
-    [g1, g2].forEach(function (grad, gi){
+    [g1, g2].forEach(function (grad, gio){
       ctx.fillStyle = grad;
+      for (var si = 0; si < numSpikes; si++){
+        var gi = gio;
+        ctx.beginPath();
+        ctx.moveTo(0, ((gi + 0) * ychunk) + (si * ychunk * 2));
+        ctx.lineTo(x, y);
+        ctx.lineTo(0, ((gi + 1) * ychunk) + (si * ychunk * 2));
+        ctx.closePath();
+        ctx.fill();
 
-      ctx.beginPath();
-      ctx.moveTo(0, (gi + 0) * ychunk);
-      ctx.lineTo(x, y);
-      ctx.lineTo(0, (gi + 1) * ychunk);
-      ctx.closePath();
-      ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(((gi + 0) * xchunk) + (si * xchunk * 2), canvasH);
+        ctx.lineTo(x, y);
+        ctx.lineTo(((gi + 1) * xchunk) + (si * xchunk * 2), canvasH);
+        ctx.closePath();
+        ctx.fill();
 
-      ctx.beginPath();
-      ctx.moveTo((gi + 0) * xchunk, canvasH);
-      ctx.lineTo(x, y);
-      ctx.lineTo((gi + 1) * xchunk, canvasH);
-      ctx.closePath();
-      ctx.fill();
+        gi = 1 - gi;
+        ctx.beginPath();
+        ctx.moveTo(canvasW, ((gi + 0) * ychunk) + (si * ychunk * 2));
+        ctx.lineTo(x, y);
+        ctx.lineTo(canvasW, ((gi + 1) * ychunk) + (si * ychunk * 2));
+        ctx.closePath();
+        ctx.fill();
 
-      gi = 1 - gi;
-      ctx.beginPath();
-      ctx.moveTo(canvasW, (gi + 0) * ychunk);
-      ctx.lineTo(x, y);
-      ctx.lineTo(canvasW, (gi + 1) * ychunk);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.moveTo((gi + 0) * xchunk, 0);
-      ctx.lineTo(x, y);
-      ctx.lineTo((gi + 1) * xchunk, 0);
-      ctx.closePath();
-      ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(((gi + 0) * xchunk) + (si * xchunk * 2), 0);
+        ctx.lineTo(x, y);
+        ctx.lineTo(((gi + 1) * xchunk) + (si * xchunk * 2), 0);
+        ctx.closePath();
+        ctx.fill();
+      }
     });
   }
 
