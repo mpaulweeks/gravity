@@ -22,7 +22,7 @@
 </head>
 <body>
   <!-- https://soundcloud.com/firstaid-pausecuts/vibe-with-you -->
-  <audio autoplay loop src="../song/FIRSTAID_VibeWithYou.mp3"></audio>
+  <audio id="jukebox" autoplay loop src="../song/FIRSTAID_VibeWithYou.mp3"></audio>
 
   <div id="main"><canvas id="canvas"></canvas></div>
   <div id="footer">
@@ -41,6 +41,11 @@
       </div>
       <br/>
       <input type="button" id="load-settings" value="LETS VIBE" />
+    </div>
+    <div class="row">
+      <div>audio controls</div>
+      <input type="button" id="pause-song" value="pause" />
+      <input type="button" id="play-song" value="play" />
     </div>
     <div class="row">@mpaulweeks</div>
   </div>

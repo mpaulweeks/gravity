@@ -54,7 +54,14 @@
   });
   document.getElementById("load-settings").addEventListener('click', function(e){
     loadSettings();
-  })
+  });
+
+  document.getElementById("pause-song").addEventListener('click', function(e){
+    document.getElementById("jukebox").pause();
+  });
+  document.getElementById("play-song").addEventListener('click', function(e){
+    document.getElementById("jukebox").play();
+  });
 
   draw();
 })();
