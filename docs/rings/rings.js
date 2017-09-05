@@ -1,6 +1,7 @@
 
 var cvas = NewCanvas();
 var rbow = NewRainbow();
+var raf;
 var rings = [];
 
 function NewRing(coord, maxRadius){
@@ -33,8 +34,6 @@ function NewRing(coord, maxRadius){
     gradient.addColorStop(0, getGradient(inner));
     gradient.addColorStop(1, getGradient(outer));
 
-    // https://stackoverflow.com/a/43433877/6461842
-
     ctx.beginPath();
     ctx.arc(self.origin.x, self.origin.y, inner, 0, 2*Math.PI);
     ctx.lineWidth = width;
@@ -62,10 +61,18 @@ function addRainbow(g){
   var colors = rbow.nextGradient();
   g.addColorStop(0, colors[0]);
   g.addColorStop(1, colors[1]);
+  return g;
+}
+function addRainbow2(g){
+  var colors = rbow.nextGradient(5);
+  g.addColorStop(0, colors[0]);
+  g.addColorStop(1, colors[1]);
+  return g;
 }
 function draw(){
-  cvas.drawCircle(addRainbow);
+  // cvas.drawCircle(addRainbow);
   // cvas.drawTriangles(addRainbow);
+  cvas.drawRipple(addRainbow, addRainbow2);
 
   var shouldCheck = false;
   rings.forEach(function(ring){
@@ -82,6 +89,7 @@ function draw(){
     rings = newRings;
   }
 
+  rbow.step();
   raf = window.requestAnimationFrame(draw);
 }
 

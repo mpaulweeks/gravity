@@ -37,13 +37,18 @@ function NewRainbow(){
     ];
   }
 
-  function nextGradient(){
-    self.counter = (self.counter + 1) % 1000000;
+  function nextGradient(bonus){
+    bonus = bonus || 0;
     var step = Math.floor(self.counter / self.stepFreq);
-    return getGradientAtStep(step, self.gradientDelta);
+    return getGradientAtStep(step + bonus, self.gradientDelta);
   }
-
   self.nextGradient = nextGradient;
+
+  function step(){
+    self.counter = (self.counter + 1) % 1000000;
+  }
+  self.step = step;
+
   return self;
 };
 
@@ -126,10 +131,46 @@ function NewCanvas(){
     ctx.fill();
   }
 
+  function drawRipple(gm1, gm2){
+    var x = currMouse.x;
+    var y = currMouse.y;
+    var g1 = gm1(ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength));
+    var g2 = gm2(ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength));
+
+    ctx.fillStyle = g1;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(x, y);
+    ctx.lineTo(0, canvasH);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(canvasW, 0);
+    ctx.lineTo(x, y);
+    ctx.lineTo(canvasW, canvasH);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = g2;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(x, y);
+    ctx.lineTo(canvasW, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(0, canvasH);
+    ctx.lineTo(x, y);
+    ctx.lineTo(canvasW, canvasH);
+    ctx.closePath();
+    ctx.fill();
+  }
+
   return {
     getMousePos: getMousePos,
     drawTriangles: drawTriangles,
     drawCircle: drawCircle,
+    drawRipple: drawRipple,
     ctx: ctx,
   };
 }
