@@ -19,6 +19,7 @@ function NewRainbowPatterns(cvas, grad){
     NewPattern(cvas.drawSpikes, grad.rainbowSeries(16, 8), {spikeWidth: 500}),
     NewPattern(cvas.drawSpikes, grad.rainbowSeries(32, 16), {spikeWidth: 500}),
     NewPattern(cvas.drawSpikes, grad.rainbowSeries(16, 1), {spikeWidth: 500}),
+    NewPattern(cvas.drawSpikes, grad.rainbowSeries(9, 4), {spikeWidth: 500}),
   ];
   var patternIndex = 0;
 

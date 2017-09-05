@@ -7,8 +7,9 @@ function NewRing(coord, maxRadius){
 
   function getGradient(r){
     var progress = (r / self.maxRadius);
-    var c = 205 + Math.floor(50 * (1 - progress));
-    return `rgba(${c},${c},${c},0.5)`;
+    var c = 255;
+    var a = (1 - progress).toFixed(2) - 0.2;
+    return `rgba(${c},${c},${c},${a})`;
   }
   self.getGradient = getGradient;
 
