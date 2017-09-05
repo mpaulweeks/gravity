@@ -34,6 +34,10 @@
     patterns.step();
     fillSettings();
   }
+  function backPattern(){
+    patterns.back();
+    fillSettings();
+  }
 
   // mouse track on mobile
   canvas.addEventListener('click', cvas.setMousePos);
@@ -45,6 +49,9 @@
   document.body.onkeyup = function(e){
     if(e.keyCode == 39){ // right key
       nextPattern();
+    }
+    if(e.keyCode == 37){ // left key
+      backPattern();
     }
   }
   document.getElementById("load-settings").addEventListener('click', function(e){

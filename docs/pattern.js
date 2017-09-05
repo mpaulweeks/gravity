@@ -45,9 +45,13 @@ function NewRainbowPatterns(cvas, grad){
     index = index || patternIndex;
     return patterns[index];
   }
-  function step(){
+  function step(delta){
+    delta = delta || 1;
     customPattern = null;
-    patternIndex = (patternIndex + 1) % patterns.length;
+    patternIndex = (patterns.length + patternIndex + delta) % patterns.length;
+  }
+  function back(){
+    step(-1);
   }
   function newCustom(settings){
     customPattern = NewPattern(cvas.drawSpikes, settings);
@@ -56,6 +60,7 @@ function NewRainbowPatterns(cvas, grad){
   return {
     get: get,
     step: step,
+    back: back,
     newCustom: newCustom,
   }
 }
