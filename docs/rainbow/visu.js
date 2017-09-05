@@ -26,9 +26,9 @@
   }
   function fillSettings(){
     var settings = patterns.get().getSettings();
-    document.getElementById("num-slices").value = settings.numSlices;
-    document.getElementById("slice-difference").value = settings.sliceDifference;
-    document.getElementById("group-width").value = settings.groupWidth;
+    document.getElementById("num-slices").value = settings.numSlices || 1;
+    document.getElementById("slice-difference").value = settings.sliceDifference || 1;
+    document.getElementById("group-width").value = settings.groupWidth || 50;
   }
 
   var numSlicesOptions = '';
