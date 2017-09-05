@@ -69,10 +69,16 @@ function addRainbow2(g){
   g.addColorStop(1, colors[1]);
   return g;
 }
+function addRainbow3(g){
+  var colors = rbow.nextGradient(10);
+  g.addColorStop(0, colors[0]);
+  g.addColorStop(1, colors[1]);
+  return g;
+}
 function draw(){
   // cvas.drawCircle(addRainbow);
   // cvas.drawTriangles(addRainbow);
-  cvas.drawRipple(addRainbow, addRainbow2);
+  cvas.drawSpikes(addRainbow, addRainbow2, addRainbow3);
 
   var shouldCheck = false;
   rings.forEach(function(ring){
