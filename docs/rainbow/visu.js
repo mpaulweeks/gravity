@@ -30,7 +30,25 @@
     document.getElementById("slice-difference").value = settings.sliceDifference || 1;
     document.getElementById("group-width").value = settings.groupWidth || 50;
   }
+  function nextPattern(){
+    patterns.step();
+    fillSettings();
+  }
 
+  // settings/patterns
+  document.getElementById("next-pattern").addEventListener('click', function(e){
+    nextPattern();
+  });
+  document.body.onkeyup = function(e){
+    if(e.keyCode == 39){ // right key
+      nextPattern();
+    }
+  }
+  document.getElementById("load-settings").addEventListener('click', function(e){
+    loadSettings();
+  });
+
+  // fill html
   var numSlicesOptions = '';
   for (var i = 1; i <= 32; i++){
     numSlicesOptions += `<option value="${i}">${i}</option>`;
@@ -48,14 +66,7 @@
   }
   document.getElementById("group-width").innerHTML = groupWidthOptions;
 
-  canvas.addEventListener('click', function(e) {
-    patterns.step();
-    fillSettings();
-  });
-  document.getElementById("load-settings").addEventListener('click', function(e){
-    loadSettings();
-  });
-
+  // audio control
   document.getElementById("pause-song").addEventListener('click', function(e){
     document.getElementById("jukebox").pause();
   });
