@@ -78,27 +78,6 @@ function NewCanvas(){
     ctx.fill();
   }
 
-  function dangleSpikes(gm1, gm2){
-    var x = currMouse.x;
-    var y = currMouse.y;
-    var g1 = gm1(ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength));
-    var g2 = gm2(ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength));
-
-    [g1, g2].forEach(function (grad, gi){
-      ctx.fillStyle = grad;
-
-      var xchunk = Math.floor(canvasW/2);
-      var ychunk = Math.floor(canvasH/2);
-
-      ctx.beginPath();
-      ctx.moveTo(0, (gi + 0) * ychunk);
-      ctx.lineTo(x, y);
-      ctx.lineTo(0, (gi + 1) * ychunk);
-      ctx.closePath();
-      ctx.fill();
-    });
-  }
-
   function drawSpikes(gms, settings){
     var x = currMouse.x;
     var y = currMouse.y;

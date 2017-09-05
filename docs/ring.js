@@ -26,19 +26,24 @@ function NewRing(coord, maxRadius){
   return self;
 }
 
-(function (){
-  var cvas = NewCanvas();
-  var rbow = NewRainbow();
-  var grad = NewGradientModifier(rbow);
-  var raf;
+function NewRingManager(){
   var rings = [];
 
-  function draw(){
-    cvas.drawSpikes(grad.rainbowSeries(3, 5), {spikeWidth: 150});
+  function newRing(coord, maxRadius){
+    var r = NewRing(coord, maxRadius);
+    rings.push(r);
+    return r;
+  }
 
-    var shouldCheck = false;
+  function draw(cvas){
     rings.forEach(function(ring){
       cvas.drawRing(ring);
+    });
+  }
+
+  function step(cvas){
+    var shouldCheck = false;
+    rings.forEach(function(ring){
       shouldCheck = shouldCheck || ring.step();
     });
     if (shouldCheck){
@@ -50,16 +55,11 @@ function NewRing(coord, maxRadius){
       });
       rings = newRings;
     }
-
-    rbow.step();
-    raf = window.requestAnimationFrame(draw);
   }
 
-  canvas.addEventListener('click', function(e) {
-    rings.push(NewRing(cvas.getMousePos(e), 300));
-  });
-
-  // rbow.stepFreq = 20;
-
-  draw();
-})();
+  return {
+    newRing: newRing,
+    draw: draw,
+    step: step,
+  }
+}
