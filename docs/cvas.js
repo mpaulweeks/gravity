@@ -21,9 +21,10 @@ function NewCanvas(){
       y: evt.clientY - rect.top
     };
   }
-  document.onmousemove = function (e) {
-    currMouse = getMousePos(e);
-  };
+  function setMousePos(evt){
+    currMouse = getMousePos(evt);
+  }
+  document.onmousemove = setMousePos;
 
   function drawCircle(gradientModifier){
     var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength);
@@ -144,6 +145,7 @@ function NewCanvas(){
   }
 
   return {
+    setMousePos: setMousePos,
     getMousePos: getMousePos,
     drawTriangles: drawTriangles,
     drawCircle: drawCircle,

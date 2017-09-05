@@ -35,6 +35,9 @@
     fillSettings();
   }
 
+  // mouse track on mobile
+  canvas.addEventListener('click', cvas.setMousePos);
+
   // settings/patterns
   document.getElementById("next-pattern").addEventListener('click', function(e){
     nextPattern();
