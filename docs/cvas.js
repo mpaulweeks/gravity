@@ -99,11 +99,11 @@ function NewCanvas(){
     });
   }
 
-  function drawSpikes(gms, spikeWidth){
+  function drawSpikes(gms, settings){
     var x = currMouse.x;
     var y = currMouse.y;
     var numGradients = gms.length;
-    var spikeWidth = spikeWidth || 50;
+    var spikeWidth = settings ? settings.spikeWidth : 50;
     var xSpikes = Math.floor(canvasW / spikeWidth);
     var ySpikes = Math.floor(canvasH / spikeWidth);
     var xChunk = 1 + Math.floor(canvasW / (numGradients*xSpikes));

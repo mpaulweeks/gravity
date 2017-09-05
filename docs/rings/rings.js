@@ -1,10 +1,4 @@
 
-var cvas = NewCanvas();
-var rbow = NewRainbow();
-var grad = NewGradientModifier(rbow);
-var raf;
-var rings = [];
-
 function NewRing(coord, maxRadius){
   var self = {};
   self.origin = coord;
@@ -32,39 +26,40 @@ function NewRing(coord, maxRadius){
   return self;
 }
 
-function draw(){
-  // cvas.drawCircle(grad.rainbow);
-  // cvas.drawTriangles(grad.rainbow);
-  cvas.drawSpikes(grad.rainbowSeries(3, 5), 150);
-  // cvas.drawSpikes(grad.rainbowSeries(4, 2), 150);
-  // cvas.drawSpikes(grad.rainbowSeries(32, 1), 500);
-  // cvas.drawSpikes(grad.rainbowSeries(16, 8), 500);
-  // cvas.drawSpikes(grad.rainbowSeries(32, 16), 500);
-  // cvas.drawSpikes(grad.rainbowSeries(16, 1), 500);
+(function (){
+  var cvas = NewCanvas();
+  var rbow = NewRainbow();
+  var grad = NewGradientModifier(rbow);
+  var raf;
+  var rings = [];
 
-  var shouldCheck = false;
-  rings.forEach(function(ring){
-    cvas.drawRing(ring);
-    shouldCheck = shouldCheck || ring.step();
-  });
-  if (shouldCheck){
-    var newRings = [];
+  function draw(){
+    cvas.drawSpikes(grad.rainbowSeries(3, 5), {spikeWidth: 150});
+
+    var shouldCheck = false;
     rings.forEach(function(ring){
-      if (!ring.isDead()){
-        newRings.push(ring);
-      }
+      cvas.drawRing(ring);
+      shouldCheck = shouldCheck || ring.step();
     });
-    rings = newRings;
+    if (shouldCheck){
+      var newRings = [];
+      rings.forEach(function(ring){
+        if (!ring.isDead()){
+          newRings.push(ring);
+        }
+      });
+      rings = newRings;
+    }
+
+    rbow.step();
+    raf = window.requestAnimationFrame(draw);
   }
 
-  rbow.step();
-  raf = window.requestAnimationFrame(draw);
-}
+  canvas.addEventListener('click', function(e) {
+    rings.push(NewRing(cvas.getMousePos(e), 300));
+  });
 
-canvas.addEventListener('click', function(e) {
-  rings.push(NewRing(cvas.getMousePos(e), 300));
-});
+  // rbow.stepFreq = 20;
 
-// rbow.stepFreq = 20;
-
-draw();
+  draw();
+})();
