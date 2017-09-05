@@ -7,7 +7,7 @@ function NewGradientModifier(rbow){
     return g;
   }
 
-  function rainbowSeries(num, bonus){
+  function rainbowSeries(settings){
     function rainbowWrapper(b){
       return function(g){
         return rainbow(g, b);
@@ -15,8 +15,8 @@ function NewGradientModifier(rbow){
     }
 
     var grads = [];
-    for (var i = 0; i < num; i++){
-      var b = i * bonus;
+    for (var i = 0; i < settings.numSlices; i++){
+      var b = i * settings.sliceDifference;
       var gm = rainbowWrapper(b);
       grads.push(gm);
     }

@@ -4,10 +4,13 @@
   var cvas = NewCanvas();
   var rbow = NewRainbow();
   var grad = NewGradientModifier(rbow);
+  var patterns = NewRainbowPatterns(cvas, grad);
+  patterns.step();
+  patterns.step();
   var ringm = NewRingManager();
 
   function draw(){
-    cvas.drawSpikes(grad.rainbowSeries(3, 5), {spikeWidth: 150});
+    patterns.get().process();
     ringm.draw(cvas);
 
     ringm.step();
