@@ -6,6 +6,7 @@
       margin: 0px auto;
       background-color: #000000;
       color: #FFFFFF;
+      font-size: 16;
     }
     a {
       color: #91D2FA;
@@ -29,10 +30,9 @@
       border: 3px solid #FFFFFF;
       text-align: center;
       position: fixed;
-      top: 10%;
+      top: 30px;
       left: 50%;
-      /* bring your own prefixes */
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, 0%);
       padding: 20px;
       border-radius: 20px;
     }
@@ -63,17 +63,17 @@
       <div> click anywhere in the rainbow to change the pattern </div>
     </div>
     <div class="row">
-      <div> customize </div>
+      <div style="text-decoration: underline;""> create your own pattern </div>
       <div>
-        <label>Number of Slices</label>
+        <label>number of Slices per Group</label>
         <select id="num-slices"></select>
       </div>
       <div>
-        <label>Slice Difference</label>
+        <label>color difference between Slices</label>
         <select id="slice-difference"></select>
       </div>
       <div>
-        <label>Group Width</label>
+        <label>Group width in pixels</label>
         <select id="group-width"></select>
       </div>
     </div>
