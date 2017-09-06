@@ -99,9 +99,12 @@
   };
   if (mobileAndTabletcheck()){
     document.getElementById('footer').style.display = "none";
-    document.getElementById('scroll-info').style.display= "none";
   } else {
-    document.getElementById('scroll-info').classList.add('fade-out');
+    document.getElementById('scroll-info').classList.remove('hidden');
+    setTimeout(function(){
+      // need timeout so HTML can render between steps
+      document.getElementById('scroll-info').classList.add('fade-out');
+    }, 0);
   }
 
   draw();

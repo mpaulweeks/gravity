@@ -23,8 +23,11 @@
       padding-top: 10px;
       padding-bottom: 10px;
     }
+    .subtitle {
+      text-decoration: underline;
+    }
     .scroll-info {
-      opacity: 0.8;
+      opacity: 1;
       background-color: #000000;
       z-index: 99;
       border: 3px solid #FFFFFF;
@@ -37,6 +40,7 @@
       border-radius: 20px;
     }
     .fade-out {
+      display: inline;
       opacity: 0;
       -webkit-transition: opacity 5s ease-in-out;
       -moz-transition: opacity 5s ease-in-out;
@@ -44,10 +48,13 @@
       -o-transition: opacity 5s ease-in-out;
       transition: opacity 5s ease-in-out;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <div id="scroll-info" class="scroll-info">
+  <div id="scroll-info" class="scroll-info hidden">
     MOVE YOUR MOUSE
     <br/>
     CLICK ANYWHERE
@@ -63,7 +70,7 @@
       <div> click anywhere in the rainbow to change the pattern </div>
     </div>
     <div class="row">
-      <div style="text-decoration: underline;""> create your own pattern </div>
+      <div class="subtitle"> create your own pattern </div>
       <div>
         <label>number of Slices per Group</label>
         <select id="num-slices"></select>
