@@ -17,11 +17,12 @@ function NewSimplePattern(canvasFunc, gradientFactory){
   return NewPattern(canvasFunc, gradientFactory, {});
 }
 
-function NewSpikePattern(canvasFunc, gradientBlueprint, numSlices, sliceDifference, groupWidth){
+function NewSpikePattern(canvasFunc, gradientBlueprint, numSlices, sliceDifference, groupWidth, tiling){
   var settings = {
     numSlices: numSlices,
     sliceDifference: sliceDifference,
     groupWidth: groupWidth,
+    tiling: tiling || 1,
   }
   var gradientFactory = gradientBlueprint(settings);
   return NewPattern(canvasFunc, gradientFactory, settings);
@@ -30,6 +31,9 @@ function NewSpikePattern(canvasFunc, gradientBlueprint, numSlices, sliceDifferen
 function NewRainbowPatterns(cvas, grad){
   var patterns = [
     NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, 3, 5, 150),
+    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, 3, 5, 150, 2),
+    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, 3, 5, 150, 3),
+    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, 32, 16, 500, 2),
     NewSimplePattern(cvas.drawCircle, grad.rainbow),
     NewSimplePattern(cvas.drawTriangles, grad.rainbow),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 3, 5, 150),

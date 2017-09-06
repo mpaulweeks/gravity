@@ -6,7 +6,6 @@ function NewCanvas(){
   canvas.height = document.body.clientHeight; //document.height is obsolete
   canvasW = canvas.width;
   canvasH = canvas.height;
-  var maxLength = canvasW > canvasH ? canvasW : canvasH;
   var ctx = canvas.getContext('2d');
   var currMouse = {
     x: Math.floor(canvasW/2),
@@ -27,6 +26,7 @@ function NewCanvas(){
   document.onmousemove = setMousePos;
 
   function drawCircle(gradientModifier){
+    var maxLength = Math.max(canvasW, canvasH);
     var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength);
     gradientModifier(gradient);
     ctx.fillStyle = gradient;
@@ -80,17 +80,21 @@ function NewCanvas(){
   }
 
   function drawCenteredSpikes(gms, settings){
-    Object.assign(settings, {
-      origin: {
-        x: Math.floor(canvasW/2),
-        y: Math.floor(canvasH/2),
-      },
-      minX: 0,
-      minY: 0,
-      maxX: canvasW,
-      maxY: canvasH,
-    });
-    drawGenericSpikes(gms, settings);
+    var xChunk = 1 + Math.floor(canvasW / settings.tiling);
+    var yChunk = 1 + Math.floor(canvasH / settings.tiling);
+    for (var x = 0; x < settings.tiling; x++){
+      settings.minX = x * xChunk;
+      settings.maxX = (x + 1) * xChunk;
+      for (var y = 0; y < settings.tiling; y++){
+        settings.minY = y * yChunk;
+        settings.maxY = (y + 1) * yChunk;
+        settings.origin = {
+          x: Math.floor((settings.maxX - settings.minX)/2 + settings.minX),
+          y: Math.floor((settings.maxY - settings.minY)/2 + settings.minY),
+        };
+        drawGenericSpikes(gms, settings);
+      }
+    }
   }
 
   function drawTrackingSpikes(gms, settings){
@@ -111,44 +115,47 @@ function NewCanvas(){
       groupWidth,
     } = settings;
     var numGradients = gms.length;
-    var xSpikes = Math.floor(maxX / groupWidth);
-    var ySpikes = Math.floor(maxY / groupWidth);
-    var xChunk = 1 + Math.floor(maxX / (numGradients*xSpikes));
-    var yChunk = 1 + Math.floor(maxY / (numGradients*ySpikes));
+    var cWidth = maxX - minX;
+    var cHeight = maxY - minY;
+    var maxLength = Math.max(cWidth, cHeight);
+    var xSpikes = Math.max(1, Math.floor(cWidth / groupWidth));
+    var ySpikes = Math.max(1, Math.floor(cHeight / groupWidth));
+    var xChunk = 1 + Math.floor(cWidth / (numGradients*xSpikes));
+    var yChunk = 1 + Math.floor(cHeight / (numGradients*ySpikes));
     gms.forEach(function (gradientModifier, gio){
       var grad = gradientModifier(ctx.createRadialGradient(origin.x, origin.y, 0, origin.x, origin.y, maxLength));
       ctx.fillStyle = grad;
       for (var si = 0; si < ySpikes; si++){
         var gi = gio;
         ctx.beginPath();
-        ctx.moveTo(minX, ((gi + 0) * yChunk) + (si * yChunk * numGradients));
+        ctx.moveTo(minX, minY + ((gi + 0) * yChunk) + (si * yChunk * numGradients));
         ctx.lineTo(origin.x, origin.y);
-        ctx.lineTo(minX, ((gi + 1) * yChunk) + (si * yChunk * numGradients));
+        ctx.lineTo(minX, minY + ((gi + 1) * yChunk) + (si * yChunk * numGradients));
         ctx.closePath();
         ctx.fill();
 
         gi = numGradients - (1 + gi);
         ctx.beginPath();
-        ctx.moveTo(maxX, ((gi + 0) * yChunk) + (si * yChunk * numGradients));
+        ctx.moveTo(maxX, minY + ((gi + 0) * yChunk) + (si * yChunk * numGradients));
         ctx.lineTo(origin.x, origin.y);
-        ctx.lineTo(maxX, ((gi + 1) * yChunk) + (si * yChunk * numGradients));
+        ctx.lineTo(maxX, minY + ((gi + 1) * yChunk) + (si * yChunk * numGradients));
         ctx.closePath();
         ctx.fill();
       }
       for (var si = 0; si < xSpikes; si++){
         var gi = gio;
         ctx.beginPath();
-        ctx.moveTo(((gi + 0) * xChunk) + (si * xChunk * numGradients), maxY);
+        ctx.moveTo(minX + ((gi + 0) * xChunk) + (si * xChunk * numGradients), maxY);
         ctx.lineTo(origin.x, origin.y);
-        ctx.lineTo(((gi + 1) * xChunk) + (si * xChunk * numGradients), maxY);
+        ctx.lineTo(minX + ((gi + 1) * xChunk) + (si * xChunk * numGradients), maxY);
         ctx.closePath();
         ctx.fill();
 
         gi = numGradients - (1 + gi);
         ctx.beginPath();
-        ctx.moveTo(((gi + 0) * xChunk) + (si * xChunk * numGradients), minY);
+        ctx.moveTo(minX + ((gi + 0) * xChunk) + (si * xChunk * numGradients), minY);
         ctx.lineTo(origin.x, origin.y);
-        ctx.lineTo(((gi + 1) * xChunk) + (si * xChunk * numGradients), minY);
+        ctx.lineTo(minX + ((gi + 1) * xChunk) + (si * xChunk * numGradients), minY);
         ctx.closePath();
         ctx.fill();
       }
