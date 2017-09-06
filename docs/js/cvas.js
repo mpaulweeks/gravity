@@ -13,6 +13,7 @@ function NewCanvas(){
   };
 
   function goFullScreen(){
+    // https://stackoverflow.com/a/16124664/6461842
     if(canvas.requestFullScreen)
       canvas.requestFullScreen();
     else if(canvas.webkitRequestFullScreen)
