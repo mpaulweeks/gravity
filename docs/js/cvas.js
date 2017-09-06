@@ -2,14 +2,11 @@
 function NewCanvas(){
   // https://stackoverflow.com/a/4037426/6461842
   var canvas = document.getElementById('canvas');
-  canvas.width = document.body.clientWidth; //document.width is obsolete
-  canvas.height = document.body.clientHeight; //document.height is obsolete
-  canvasW = canvas.width;
-  canvasH = canvas.height;
+  getCanvasSettings();
   var ctx = canvas.getContext('2d');
   var currMouse = {
-    x: Math.floor(canvasW/2),
-    y: Math.floor(canvasH/2),
+    x: Math.floor(canvas.width/2),
+    y: Math.floor(canvas.height/2),
   };
 
   function goFullScreen(){
@@ -35,7 +32,22 @@ function NewCanvas(){
   }
   document.onmousemove = setMousePos;
 
+  function getCanvasSettings(){
+    var canvasW = document.body.clientWidth; //document.width is obsolete
+    var canvasH = document.body.clientHeight; //document.height is obsolete
+    // only set on change, setting clears the canvas and introduces jaggies
+    if (canvasW !== canvas.width)
+      canvas.width = canvasW;
+    if (canvasH !== canvas.height)
+      canvas.height = canvasH;
+    return {
+      canvasW: canvasW,
+      canvasH: canvasH,
+    }
+  }
+
   function drawCircle(gradientModifier){
+    var {canvasW, canvasH} = getCanvasSettings();
     var maxLength = Math.max(canvasW, canvasH);
     var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength);
     gradientModifier(gradient);
@@ -44,6 +56,7 @@ function NewCanvas(){
   }
 
   function drawCenteredSpikes(gms, settings){
+    var {canvasW, canvasH} = getCanvasSettings();
     var xChunk = 1 + Math.floor(canvasW / settings.tiling);
     var yChunk = 1 + Math.floor(canvasH / settings.tiling);
     for (var x = 0; x < settings.tiling; x++){
@@ -62,6 +75,7 @@ function NewCanvas(){
   }
 
   function drawTrackingSpikes(gms, settings){
+    var {canvasW, canvasH} = getCanvasSettings();
     Object.assign(settings, {
       origin: currMouse,
       minX: 0,
