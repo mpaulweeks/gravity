@@ -37,7 +37,7 @@ function NewRainbowPatterns(cvas, grad){
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 32, 1, 500),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 16, 8, 500),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 32, 16, 500),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 16, 1, 500),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 16, 1, 950),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 9, 4, 500),
     NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, 9, 4, 150, 2),
     NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, 3, 5, 150, 3),
