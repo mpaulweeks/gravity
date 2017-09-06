@@ -41,7 +41,7 @@ function NewJukebox(tracks){
   var jukeboxPlaying = getCookie(COOKIE_MUTE) != "true";
   var infoElm = document.getElementById('jukebox');
   infoElm.innerHTML = `
-      <div>currently listening to</div>
+      <div>you are currently listening to</div>
       <div><a id="jukebox-url" target="_blank" href=""></a></div>
       <input type="button" id="jukebox-toggle" value="loading..." />
       <input type="button" id="jukebox-next" value="next track" />

@@ -4,6 +4,11 @@
   <style type="text/css">
     body {
       margin: 0px auto;
+      background-color: #000000;
+      color: #FFFFFF;
+    }
+    a {
+      color: #91D2FA;
     }
     #main {
       cursor: none;
@@ -11,7 +16,6 @@
     }
     #footer {
       border-top: 10px solid white;
-      background-color: #dddddd;
       text-align: center;
     }
     .row {
@@ -19,14 +23,13 @@
       padding-bottom: 10px;
     }
     .scroll-info {
-      opacity: 1;
-      z-index: 99;
-      color: #FFFFFF;
+      opacity: 0.8;
       background-color: #000000;
+      z-index: 99;
       border: 3px solid #FFFFFF;
       text-align: center;
       position: fixed;
-      top: 50%;
+      top: 10%;
       left: 50%;
       /* bring your own prefixes */
       transform: translate(-50%, -50%);
@@ -39,19 +42,23 @@
       -moz-transition: opacity 5s ease-in-out;
       -ms-transition: opacity 5s ease-in-out;
       -o-transition: opacity 5s ease-in-out;
-      transition: opacity 3s ease-in-out;
+      transition: opacity 5s ease-in-out;
     }
   </style>
 </head>
 <body>
-  <div id="scroll-info" class="scroll-info">SCROLL DOWN FOR INFO</div>
+  <div id="scroll-info" class="scroll-info">
+    CLICK ANYWHERE, SEE WHAT HAPPENS
+    <br/>
+    SCROLL DOWN FOR MORE INFO
+  </div>
   <div id="main"><canvas id="canvas"></canvas></div>
   <div id="footer">
     <div class="row">
-      <input type="button" id="next-pattern" value="NEXT" />
-      <div> (or click anywhere in the rainbow) </div>
+      <div> click anywhere in the rainbow to change the pattern </div>
     </div>
     <div class="row">
+      <div> customize </div>
       <div>
         <label>Number of Slices</label>
         <select id="num-slices"></select>

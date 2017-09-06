@@ -49,7 +49,6 @@
   }
 
   // settings/patterns
-  document.getElementById("next-pattern").addEventListener('click', nextPattern);
   canvas.addEventListener('click', nextPattern);
   document.body.onkeyup = function(e){
     if(e.keyCode == 39){ // right key
