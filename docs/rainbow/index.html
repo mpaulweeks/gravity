@@ -44,8 +44,6 @@
   </style>
 </head>
 <body>
-  <!-- https://soundcloud.com/firstaid-pausecuts/vibe-with-you -->
-  <audio id="jukebox" autoplay loop src="../song/FIRSTAID_VibeWithYou.mp3"></audio>
   <div id="scroll-info" class="scroll-info">SCROLL DOWN FOR INFO</div>
   <div id="main"><canvas id="canvas"></canvas></div>
   <div id="footer">
@@ -67,17 +65,14 @@
         <select id="group-width"></select>
       </div>
     </div>
-    <div class="row">
-      <div>audio controls</div>
-      <input type="button" id="pause-song" value="pause" />
-      <input type="button" id="play-song" value="play" />
-    </div>
+    <div id="jukebox" class="row"></div>
     <div class="row"><a href="https://twitter.com/mpaulweeks">@mpaulweeks</a></div>
   </div>
 
-  <script type="text/javascript" src="../rbow.js"></script>
-  <script type="text/javascript" src="../cvas.js"></script>
-  <script type="text/javascript" src="../grad.js"></script>
-  <script type="text/javascript" src="../pattern.js"></script>
+  <script type="text/javascript" src="../js/rbow.js"></script>
+  <script type="text/javascript" src="../js/cvas.js"></script>
+  <script type="text/javascript" src="../js/grad.js"></script>
+  <script type="text/javascript" src="../js/pattern.js"></script>
+  <script type="text/javascript" src="../js/jukebox.js"></script>
   <script type="text/javascript" src="visu.js"></script>
 </body>

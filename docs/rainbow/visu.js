@@ -5,6 +5,21 @@
   var rbow = NewRainbow();
   var grad = NewGradientModifier(rbow);
   var patterns = NewRainbowPatterns(cvas, grad);
+  var jukebox = NewJukebox([
+    NewTrack(
+      '../song',
+      'FIRSTAID_VibeWithYou.mp3',
+      'FIRSTAID - Vibe With You',
+      'https://soundcloud.com/firstaid-pausecuts/vibe-with-you',
+    ),
+    NewTrack(
+      '../song',
+      'TheFatRat_TimeLapse.mp3',
+      'TheFatRat - Time Lapse',
+      'https://the-arcadium.net/tracks/time-lapse',
+    ),
+
+  ]);
 
   function draw(){
     patterns.get().process();
@@ -65,14 +80,6 @@
   }
   document.getElementById("group-width").innerHTML = groupWidthOptions;
   document.getElementById("group-width").onchange = loadSettings;
-
-  // audio control
-  document.getElementById("pause-song").addEventListener('click', function(e){
-    document.getElementById("jukebox").pause();
-  });
-  document.getElementById("play-song").addEventListener('click', function(e){
-    document.getElementById("jukebox").play();
-  });
 
   // mobile
   document.addEventListener('touchmove', function(e) {
