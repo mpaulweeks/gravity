@@ -7,13 +7,13 @@
   var patterns = NewRainbowPatterns(cvas, grad);
   var jukebox = NewJukebox([
     NewTrack(
-      '../song',
+      'song',
       'FIRSTAID_VibeWithYou.mp3',
       'FIRSTAID - Vibe With You',
       'https://soundcloud.com/firstaid-pausecuts/vibe-with-you',
     ),
     NewTrack(
-      '../song',
+      'song',
       'TheFatRat_TimeLapse.mp3',
       'TheFatRat - Time Lapse',
       'https://the-arcadium.net/tracks/time-lapse',
@@ -40,7 +40,7 @@
     document.getElementById("group-width").value = settings.groupWidth || 200;
   }
   function nextPattern(){
-    patterns.step();
+    patterns.next();
     fillSettings();
   }
   function backPattern(){
@@ -60,7 +60,7 @@
     }
   }
 
-  // fill html
+  // generate form html
   var numSlicesOptions = '';
   for (var i = 1; i <= 32; i++){
     numSlicesOptions += `<option value="${i}">${i}</option>`;

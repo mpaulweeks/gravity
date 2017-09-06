@@ -33,52 +33,6 @@ function NewCanvas(){
     ctx.fillRect(0,0,canvasW,canvasH);
   }
 
-  function drawTriangles(gradientModifier){
-    var x = currMouse.x;
-    var y = currMouse.y;
-    var gradient;
-
-    gradient = ctx.createLinearGradient(0, 0, x, 0);
-    gradientModifier(gradient);
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(x, y);
-    ctx.lineTo(0, canvasH);
-    ctx.closePath();
-    ctx.fill();
-
-    gradient = ctx.createLinearGradient(canvasW, 0, x, 0);
-    gradientModifier(gradient);
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.moveTo(canvasW, 0);
-    ctx.lineTo(x, y);
-    ctx.lineTo(canvasW, canvasH);
-    ctx.closePath();
-    ctx.fill();
-
-    gradient = ctx.createLinearGradient(0, 0, 0, y);
-    gradientModifier(gradient);
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(x, y);
-    ctx.lineTo(canvasW, 0);
-    ctx.closePath();
-    ctx.fill();
-
-    gradient = ctx.createLinearGradient(0, canvasH, 0, y);
-    gradientModifier(gradient);
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.moveTo(0, canvasH);
-    ctx.lineTo(x, y);
-    ctx.lineTo(canvasW, canvasH);
-    ctx.closePath();
-    ctx.fill();
-  }
-
   function drawCenteredSpikes(gms, settings){
     var xChunk = 1 + Math.floor(canvasW / settings.tiling);
     var yChunk = 1 + Math.floor(canvasH / settings.tiling);
@@ -181,7 +135,6 @@ function NewCanvas(){
   return {
     setMousePos: setMousePos,
     getMousePos: getMousePos,
-    drawTriangles: drawTriangles,
     drawCircle: drawCircle,
     drawTrackingSpikes: drawTrackingSpikes,
     drawCenteredSpikes: drawCenteredSpikes,

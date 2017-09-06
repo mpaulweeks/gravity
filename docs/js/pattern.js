@@ -31,7 +31,6 @@ function NewSpikePattern(canvasFunc, gradientBlueprint, numSlices, sliceDifferen
 function NewRainbowPatterns(cvas, grad){
   var patterns = [
     NewSimplePattern(cvas.drawCircle, grad.rainbow),
-    // NewSimplePattern(cvas.drawTriangles, grad.rainbow),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 3, 5, 150),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 4, 2, 150),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 32, 1, 500),
@@ -53,13 +52,13 @@ function NewRainbowPatterns(cvas, grad){
     index = index || patternIndex;
     return patterns[index];
   }
-  function step(delta){
+  function next(delta){
     delta = delta || 1;
     customPattern = null;
     patternIndex = (patterns.length + patternIndex + delta) % patterns.length;
   }
   function back(){
-    step(-1);
+    next(-1);
   }
   function newCustom(numSlices, sliceDifference, groupWidth){
     customPattern = NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, numSlices, sliceDifference, groupWidth);
@@ -67,7 +66,7 @@ function NewRainbowPatterns(cvas, grad){
 
   return {
     get: get,
-    step: step,
+    next: next,
     back: back,
     newCustom: newCustom,
   }
