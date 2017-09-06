@@ -22,7 +22,7 @@
     var settings = patterns.get().getSettings();
     document.getElementById("num-slices").value = settings.numSlices || 1;
     document.getElementById("slice-difference").value = settings.sliceDifference || 1;
-    document.getElementById("group-width").value = settings.groupWidth || 50;
+    document.getElementById("group-width").value = settings.groupWidth || 200;
   }
   function nextPattern(){
     patterns.step();
@@ -44,9 +44,6 @@
       backPattern();
     }
   }
-  document.getElementById("load-settings").addEventListener('click', function(e){
-    loadSettings();
-  });
 
   // fill html
   var numSlicesOptions = '';
@@ -54,17 +51,20 @@
     numSlicesOptions += `<option value="${i}">${i}</option>`;
   }
   document.getElementById("num-slices").innerHTML = numSlicesOptions;
+  document.getElementById("num-slices").onchange = loadSettings;
   var sliceDifferenceOptions = '';
   for (var i = 1; i <= 16; i++){
     sliceDifferenceOptions += `<option value="${i}">${i}</option>`;
   }
   document.getElementById("slice-difference").innerHTML = sliceDifferenceOptions;
+  document.getElementById("slice-difference").onchange = loadSettings;
   var groupWidthOptions = '';
-  for (var i = 1; i <= 10; i++){
+  for (var i = 1; i <= 19; i++){
     var v = i*50;
     groupWidthOptions += `<option value="${v}">${v}</option>`;
   }
   document.getElementById("group-width").innerHTML = groupWidthOptions;
+  document.getElementById("group-width").onchange = loadSettings;
 
   // audio control
   document.getElementById("pause-song").addEventListener('click', function(e){
