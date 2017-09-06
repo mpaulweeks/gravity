@@ -1,7 +1,6 @@
 
-function NewPattern(canvasFunc, settings){
+function NewPattern(canvasFunc, gradientFactory, settings){
   function process(){
-    var gradientFactory = settings.gradientFactory(settings);
     return canvasFunc(gradientFactory, settings);
   }
   function getSettings(){
@@ -14,26 +13,32 @@ function NewPattern(canvasFunc, settings){
   };
 }
 
-function NewSettings(gradientFactory, numSlices, sliceDifference, groupWidth){
-  return {
-    gradientFactory: gradientFactory,
+function NewSimplePattern(canvasFunc, gradientFactory){
+  return NewPattern(canvasFunc, gradientFactory, {});
+}
+
+function NewSpikePattern(canvasFunc, gradientBlueprint, numSlices, sliceDifference, groupWidth){
+  var settings = {
     numSlices: numSlices,
     sliceDifference: sliceDifference,
     groupWidth: groupWidth,
-  };
+  }
+  var gradientFactory = gradientBlueprint(settings);
+  return NewPattern(canvasFunc, gradientFactory, settings);
 }
 
 function NewRainbowPatterns(cvas, grad){
   var patterns = [
-    NewPattern(cvas.drawCircle, NewSettings(function (){return grad.rainbow})),
-    NewPattern(cvas.drawTriangles, NewSettings(function (){return grad.rainbow})),
-    NewPattern(cvas.drawSpikes, NewSettings(grad.rainbowSeries, 3, 5, 150)),
-    NewPattern(cvas.drawSpikes, NewSettings(grad.rainbowSeries, 4, 2, 150)),
-    NewPattern(cvas.drawSpikes, NewSettings(grad.rainbowSeries, 32, 1, 500)),
-    NewPattern(cvas.drawSpikes, NewSettings(grad.rainbowSeries, 16, 8, 500)),
-    NewPattern(cvas.drawSpikes, NewSettings(grad.rainbowSeries, 32, 16, 500)),
-    NewPattern(cvas.drawSpikes, NewSettings(grad.rainbowSeries, 16, 1, 500)),
-    NewPattern(cvas.drawSpikes, NewSettings(grad.rainbowSeries, 9, 4, 500)),
+    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, 3, 5, 150),
+    NewSimplePattern(cvas.drawCircle, grad.rainbow),
+    NewSimplePattern(cvas.drawTriangles, grad.rainbow),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 3, 5, 150),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 4, 2, 150),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 32, 1, 500),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 16, 8, 500),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 32, 16, 500),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 16, 1, 500),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 9, 4, 500),
   ];
   var patternIndex = 0;
   var customPattern = null;
@@ -53,8 +58,8 @@ function NewRainbowPatterns(cvas, grad){
   function back(){
     step(-1);
   }
-  function newCustom(settings){
-    customPattern = NewPattern(cvas.drawSpikes, settings);
+  function newCustom(numSlices, sliceDifference, groupWidth){
+    customPattern = NewSpikePattern(cvas.drawSpikes, grad.rainbowSeries, numSlices, sliceDifference, groupWidth);
   }
 
   return {

@@ -16,13 +16,7 @@
     var numSlices = parseInt(document.getElementById("num-slices").value);
     var sliceDifference = parseInt(document.getElementById("slice-difference").value);
     var groupWidth = parseInt(document.getElementById("group-width").value);
-    var settings = {
-      gradientFactory: grad.rainbowSeries,
-      numSlices: numSlices,
-      sliceDifference: sliceDifference,
-      groupWidth: groupWidth,
-    }
-    patterns.newCustom(settings);
+    patterns.newCustom(numSlices, sliceDifference, groupWidth);
   }
   function fillSettings(){
     var settings = patterns.get().getSettings();

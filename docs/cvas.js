@@ -79,49 +79,76 @@ function NewCanvas(){
     ctx.fill();
   }
 
-  function drawSpikes(gms, settings){
-    var x = currMouse.x;
-    var y = currMouse.y;
+  function drawCenteredSpikes(gms, settings){
+    Object.assign(settings, {
+      origin: {
+        x: Math.floor(canvasW/2),
+        y: Math.floor(canvasH/2),
+      },
+      minX: 0,
+      minY: 0,
+      maxX: canvasW,
+      maxY: canvasH,
+    });
+    drawGenericSpikes(gms, settings);
+  }
+
+  function drawTrackingSpikes(gms, settings){
+    Object.assign(settings, {
+      origin: currMouse,
+      minX: 0,
+      minY: 0,
+      maxX: canvasW,
+      maxY: canvasH,
+    });
+    drawGenericSpikes(gms, settings);
+  }
+
+  function drawGenericSpikes(gms, settings){
+    var {
+      origin,
+      minX, maxX, minY, maxY,
+      groupWidth,
+    } = settings;
     var numGradients = gms.length;
-    var spikeWidth = settings ? settings.groupWidth : 50;
-    var xSpikes = Math.floor(canvasW / spikeWidth);
-    var ySpikes = Math.floor(canvasH / spikeWidth);
-    var xChunk = 1 + Math.floor(canvasW / (numGradients*xSpikes));
-    var yChunk = 1 + Math.floor(canvasH / (numGradients*ySpikes));
+    var xSpikes = Math.floor(maxX / groupWidth);
+    var ySpikes = Math.floor(maxY / groupWidth);
+    var xChunk = 1 + Math.floor(maxX / (numGradients*xSpikes));
+    var yChunk = 1 + Math.floor(maxY / (numGradients*ySpikes));
     gms.forEach(function (gradientModifier, gio){
-      var grad = gradientModifier(ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength));
+      var grad = gradientModifier(ctx.createRadialGradient(origin.x, origin.y, 0, origin.x, origin.y, maxLength));
       ctx.fillStyle = grad;
       for (var si = 0; si < ySpikes; si++){
         var gi = gio;
         ctx.beginPath();
-        ctx.moveTo(0, ((gi + 0) * yChunk) + (si * yChunk * numGradients));
-        ctx.lineTo(x, y);
-        ctx.lineTo(0, ((gi + 1) * yChunk) + (si * yChunk * numGradients));
+        ctx.moveTo(minX, ((gi + 0) * yChunk) + (si * yChunk * numGradients));
+        ctx.lineTo(origin.x, origin.y);
+        ctx.lineTo(minX, ((gi + 1) * yChunk) + (si * yChunk * numGradients));
         ctx.closePath();
         ctx.fill();
 
         gi = numGradients - (1 + gi);
         ctx.beginPath();
-        ctx.moveTo(canvasW, ((gi + 0) * yChunk) + (si * yChunk * numGradients));
-        ctx.lineTo(x, y);
-        ctx.lineTo(canvasW, ((gi + 1) * yChunk) + (si * yChunk * numGradients));
+        ctx.moveTo(maxX, ((gi + 0) * yChunk) + (si * yChunk * numGradients));
+        ctx.lineTo(origin.x, origin.y);
+        ctx.lineTo(maxX, ((gi + 1) * yChunk) + (si * yChunk * numGradients));
         ctx.closePath();
         ctx.fill();
       }
       for (var si = 0; si < xSpikes; si++){
         var gi = gio;
         ctx.beginPath();
-        ctx.moveTo(((gi + 0) * xChunk) + (si * xChunk * numGradients), canvasH);
-        ctx.lineTo(x, y);
-        ctx.lineTo(((gi + 1) * xChunk) + (si * xChunk * numGradients), canvasH);
+        ctx.moveTo(((gi + 0) * xChunk) + (si * xChunk * numGradients), maxY);
+        ctx.lineTo(origin.x, origin.y);
+        ctx.lineTo(((gi + 1) * xChunk) + (si * xChunk * numGradients), maxY);
         ctx.closePath();
         ctx.fill();
 
         gi = numGradients - (1 + gi);
         ctx.beginPath();
-        ctx.moveTo(((gi + 0) * xChunk) + (si * xChunk * numGradients), 0);
-        ctx.lineTo(x, y);
-        ctx.lineTo(((gi + 1) * xChunk) + (si * xChunk * numGradients), 0);
+        ctx.moveTo(((gi + 0) * xChunk) + (si * xChunk * numGradients), minY);
+        ctx.lineTo(origin.x, origin.y);
+        ctx.lineTo(((gi + 1) * xChunk) + (si * xChunk * numGradients), minY);
         ctx.closePath();
         ctx.fill();
       }
@@ -149,7 +176,8 @@ function NewCanvas(){
     getMousePos: getMousePos,
     drawTriangles: drawTriangles,
     drawCircle: drawCircle,
-    drawSpikes: drawSpikes,
+    drawTrackingSpikes: drawTrackingSpikes,
+    drawCenteredSpikes: drawCenteredSpikes,
     drawRing: drawRing,
   };
 }
