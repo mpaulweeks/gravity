@@ -10,19 +10,19 @@
       'song',
       'FIRSTAID_VibeWithYou.mp3',
       'FIRSTAID - Vibe With You',
-      'https://first-aid.bandcamp.com/album/nostalgic-falling-down',
+      'https://first-aid.bandcamp.com/album/nostalgic-falling-down'
     ),
     NewTrack(
       'song',
       'TheFatRat_TimeLapse.mp3',
       'TheFatRat - Time Lapse',
-      'https://the-arcadium.net/tracks/time-lapse',
+      'https://the-arcadium.net/tracks/time-lapse'
     ),
     NewTrack(
       'song',
       'Justice_CloseCall.mp3',
       'Justice - Close Call',
-      'https://itunes.apple.com/us/album/woman/id1151157609',
+      'https://itunes.apple.com/us/album/woman/id1151157609'
     ),
   ]);
 

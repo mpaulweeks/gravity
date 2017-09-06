@@ -143,7 +143,7 @@ function NewCanvas(){
   function drawRing(ring){
     var gradient = ctx.createRadialGradient(
       ring.origin.x, ring.origin.y, ring.getInner(),
-      ring.origin.x, ring.origin.y, ring.getOuter(),
+      ring.origin.x, ring.origin.y, ring.getOuter()
     );
     ring.gradientModifier(gradient);
 
