@@ -54,7 +54,7 @@
   }
 
   // settings/patterns
-  canvas.addEventListener('click', nextPattern);
+  cvas.elm.addEventListener('click', nextPattern);
   document.body.onkeyup = function(e){
     if(e.keyCode == 39){ // right key
       nextPattern();
@@ -63,6 +63,7 @@
       backPattern();
     }
   }
+  document.getElementById('fullScreen').addEventListener('click', cvas.goFullScreen);
 
   // generate form html
   var numSlicesOptions = '';

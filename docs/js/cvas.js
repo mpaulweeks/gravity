@@ -12,6 +12,15 @@ function NewCanvas(){
     y: Math.floor(canvasH/2),
   };
 
+  function goFullScreen(){
+    if(canvas.requestFullScreen)
+      canvas.requestFullScreen();
+    else if(canvas.webkitRequestFullScreen)
+      canvas.webkitRequestFullScreen();
+    else if(canvas.mozRequestFullScreen)
+      canvas.mozRequestFullScreen();
+  }
+
   function getMousePos(evt) {
     // https://stackoverflow.com/a/17130415/6461842
     var rect = canvas.getBoundingClientRect();
@@ -131,6 +140,8 @@ function NewCanvas(){
   }
 
   return {
+    elm: canvas,
+    goFullScreen: goFullScreen,
     setMousePos: setMousePos,
     getMousePos: getMousePos,
     drawCircle: drawCircle,
