@@ -5,8 +5,8 @@
   var rbow = NewRainbow();
   var grad = NewGradientModifier(rbow);
   var patterns = NewRainbowPatterns(cvas, grad);
-  patterns.step();
-  patterns.step();
+  patterns.next();
+  patterns.next();
   var ringm = NewRingManager();
 
   function draw(){

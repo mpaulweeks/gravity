@@ -117,17 +117,15 @@ function NewCanvas(){
   }
 
   function drawRing(ring){
-    var outer = ring.radius;
-    var width = 50;
-    var inner = outer - width;
-    var gradient = ctx.createRadialGradient(ring.origin.x, ring.origin.y, inner, ring.origin.x, ring.origin.y, outer);
-
-    gradient.addColorStop(0, ring.getGradient(inner));
-    gradient.addColorStop(1, ring.getGradient(outer));
+    var gradient = ctx.createRadialGradient(
+      ring.origin.x, ring.origin.y, ring.getInner(),
+      ring.origin.x, ring.origin.y, ring.getOuter(),
+    );
+    ring.gradientModifier(gradient);
 
     ctx.beginPath();
-    ctx.arc(ring.origin.x, ring.origin.y, inner, 0, 2*Math.PI);
-    ctx.lineWidth = width;
+    ctx.arc(ring.origin.x, ring.origin.y, ring.getInner(), 0, 2*Math.PI);
+    ctx.lineWidth = ring.width;
     ctx.strokeStyle = gradient;
     ctx.stroke();
   }

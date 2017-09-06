@@ -42,12 +42,13 @@ function NewRainbow(){
     var step = Math.floor(self.counter / self.stepFreq);
     return getGradientAtStep(step + bonus, self.gradientDelta);
   }
-  self.getGradient = getGradient;
 
   function step(){
     self.counter = (self.counter + 1) % 1000000;
   }
-  self.step = step;
 
-  return self;
+  return Object.assign(self, {
+    getGradient: getGradient,
+    step: step,
+  });
 };
