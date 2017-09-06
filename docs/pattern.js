@@ -31,7 +31,7 @@ function NewSpikePattern(canvasFunc, gradientBlueprint, numSlices, sliceDifferen
 function NewRainbowPatterns(cvas, grad){
   var patterns = [
     NewSimplePattern(cvas.drawCircle, grad.rainbow),
-    NewSimplePattern(cvas.drawTriangles, grad.rainbow),
+    // NewSimplePattern(cvas.drawTriangles, grad.rainbow),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 3, 5, 150),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 4, 2, 150),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, 32, 1, 500),
