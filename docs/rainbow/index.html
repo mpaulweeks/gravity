@@ -18,12 +18,35 @@
       padding-top: 10px;
       padding-bottom: 10px;
     }
+    .scroll-info {
+      opacity: 1;
+      z-index: 99;
+      color: #FFFFFF;
+      background-color: #000000;
+      border: 3px solid #FFFFFF;
+      text-align: center;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      /* bring your own prefixes */
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      border-radius: 20px;
+    }
+    .fade-out {
+      opacity: 0;
+      -webkit-transition: opacity 5s ease-in-out;
+      -moz-transition: opacity 5s ease-in-out;
+      -ms-transition: opacity 5s ease-in-out;
+      -o-transition: opacity 5s ease-in-out;
+      transition: opacity 3s ease-in-out;
+    }
   </style>
 </head>
 <body>
   <!-- https://soundcloud.com/firstaid-pausecuts/vibe-with-you -->
   <audio id="jukebox" autoplay loop src="../song/FIRSTAID_VibeWithYou.mp3"></audio>
-
+  <div id="scroll-info" class="scroll-info">SCROLL DOWN FOR INFO</div>
   <div id="main"><canvas id="canvas"></canvas></div>
   <div id="footer">
     <div class="row">

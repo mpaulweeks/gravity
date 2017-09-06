@@ -88,6 +88,9 @@
   };
   if (mobileAndTabletcheck()){
     document.getElementById('footer').style.display = "none";
+    document.getElementById('scroll-info').style.display= "none";
+  } else {
+    document.getElementById('scroll-info').classList.add('fade-out');
   }
 
   draw();
