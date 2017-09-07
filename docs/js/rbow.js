@@ -1,4 +1,12 @@
 
+function NewRainbowSettings(args){
+  var defaults = {
+    phaseDelta: 2,
+    colorRange: 127,
+  }
+  return Object.assign(defaults, args);
+}
+
 function NewRainbow(){
   // https://krazydad.com/tutorials/makecolors.php
   function byte2Hex(n)
@@ -9,14 +17,11 @@ function NewRainbow(){
   function RGB2Color(r,g,b){
     return '#' + byte2Hex(r) + byte2Hex(g) + byte2Hex(b);
   }
-  function makeColorGradient(frequency1, frequency2, frequency3,
-                             phase1, phase2, phase3,
-                             i){
+  function makeColorGradient(frequency1, frequency2, frequency3, step, settings){
     var center = 128;
-    var width = 127;
-    var red = Math.sin(frequency1*i + phase1) * width + center;
-    var grn = Math.sin(frequency2*i + phase2) * width + center;
-    var blu = Math.sin(frequency3*i + phase3) * width + center;
+    var red = (Math.sin((frequency1 * step) + (0 * settings.phaseDelta)) * settings.colorRange) + center;
+    var grn = (Math.sin((frequency2 * step) + (1 * settings.phaseDelta)) * settings.colorRange) + center;
+    var blu = (Math.sin((frequency3 * step) + (2 * settings.phaseDelta)) * settings.colorRange) + center;
     return RGB2Color(red,grn,blu);
   }
 
@@ -26,21 +31,26 @@ function NewRainbow(){
   self.stepFreq = 5; // 5 for circles, 20 for triangles
   self.counter = 0;
 
-  function getAtStep(step){
-    return makeColorGradient(self.freq, self.freq, self.freq, 0, 2, 4, step);
+  function getAtStep(step, settings){
+    return makeColorGradient(
+      self.freq,
+      self.freq,
+      self.freq,
+      step,
+      settings
+    );
   }
 
-  function getGradientAtStep(step, delta){
+  function getGradientAtStep(step, settings){
     return [
-      getAtStep(step),
-      getAtStep(step+delta),
+      getAtStep(step, settings),
+      getAtStep(step + self.gradientDelta, settings),
     ];
   }
 
-  function getGradient(bonus){
-    bonus = bonus || 0;
-    var step = Math.floor(self.counter / self.stepFreq);
-    return getGradientAtStep(step + bonus, self.gradientDelta);
+  function getGradient(settings){
+    var step = Math.floor(self.counter / self.stepFreq) + (settings.sliceDifference * settings.sliceIndex);
+    return getGradientAtStep(step, settings);
   }
 
   function step(){

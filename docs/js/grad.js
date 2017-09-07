@@ -1,23 +1,24 @@
 
 function NewGradientModifier(rbow){
-  function rainbow(g, bonus){
-    var colors = rbow.getGradient(bonus || 0);
+  function rainbow(g, rainbowSettings){
+    var colors = rbow.getGradient(rainbowSettings);
     g.addColorStop(0, colors[0]);
     g.addColorStop(1, colors[1]);
     return g;
   }
 
   function rainbowSeries(settings){
-    function rainbowWrapper(b){
+    function rainbowWrapper(newSettings){
       return function(g){
-        return rainbow(g, b);
+        return rainbow(g, newSettings);
       }
     }
 
     var grads = [];
     for (var i = 0; i < settings.numSlices; i++){
-      var b = i * settings.sliceDifference;
-      var gm = rainbowWrapper(b);
+      var newSettings = Object.assign({}, settings);
+      newSettings.sliceIndex = i;
+      var gm = rainbowWrapper(newSettings);
       grads.push(gm);
     }
     return grads;

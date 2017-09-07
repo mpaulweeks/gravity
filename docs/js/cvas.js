@@ -46,11 +46,11 @@ function NewCanvas(){
     }
   }
 
-  function drawCircle(gradientModifier){
+  function drawCircle(gradientModifier, settings){
     var {canvasW, canvasH} = getCanvasSettings();
     var maxLength = Math.max(canvasW, canvasH);
     var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength);
-    gradientModifier(gradient);
+    gradientModifier(gradient, settings);
     ctx.fillStyle = gradient;
     ctx.fillRect(0,0,canvasW,canvasH);
   }

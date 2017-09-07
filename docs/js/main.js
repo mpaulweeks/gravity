@@ -32,17 +32,50 @@
     raf = window.requestAnimationFrame(draw);
   }
 
+  var settingsElms = [];
+  function NewSetting(name, iStart, iEnd, iDelta, description){
+    var idSelector = 'settings-' + name;
+    var optionsHTML = '';
+    for (var i = iStart; i <= iEnd; i += iDelta){
+      optionsHTML += `<option value="${i}">${i}</option>`;
+    }
+    var newDiv =  document.createElement("div");
+    newDiv.innerHTML = `<label>${description}</label><select class="settings-select" id="${idSelector}">${optionsHTML}</select>`;
+    document.getElementById('settings').appendChild(newDiv);
+
+    var elm = document.getElementById(idSelector);
+    function getInt(){
+      return parseInt(elm.value);
+    }
+    function setValue(v){
+      elm.value = v;
+    }
+    elm.onchange = loadSettings;
+    settingsElms.push({
+      getInt: getInt,
+      setValue: setValue,
+      name: name,
+    });
+  }
+  NewSetting('phaseDelta', 0, 32, 1, 'RGB shift');
+  NewSetting('colorRange', 0, 127, 1, 'contrast');
+  NewSetting('numSlices', 1, 32, 1, 'number of Slices per Group');
+  NewSetting('sliceDifference', 0, 16, 1, 'color difference between Slices');
+  NewSetting('groupWidth', 50, 950, 50, 'Group width in pixels');
+  // NewSetting('tiling', 1, 3, 1, 'number of displays across');
+
   function loadSettings(){
-    var numSlices = parseInt(document.getElementById("num-slices").value);
-    var sliceDifference = parseInt(document.getElementById("slice-difference").value);
-    var groupWidth = parseInt(document.getElementById("group-width").value);
-    patterns.newCustom(numSlices, sliceDifference, groupWidth);
+    var newSettings = {};
+    settingsElms.forEach(function (se){
+      newSettings[se.name] = se.getInt();
+    });
+    patterns.newCustom(newSettings);
   }
   function fillSettings(){
     var settings = patterns.get().getSettings();
-    document.getElementById("num-slices").value = settings.numSlices || 1;
-    document.getElementById("slice-difference").value = settings.sliceDifference || 1;
-    document.getElementById("group-width").value = settings.groupWidth || 200;
+    settingsElms.forEach(function (se){
+      se.setValue(settings[se.name]);
+    });
   }
   function nextPattern(){
     patterns.next();
@@ -64,27 +97,6 @@
     }
   }
   document.getElementById('fullScreen').addEventListener('click', cvas.goFullScreen);
-
-  // generate form html
-  var numSlicesOptions = '';
-  for (var i = 1; i <= 32; i++){
-    numSlicesOptions += `<option value="${i}">${i}</option>`;
-  }
-  document.getElementById("num-slices").innerHTML = numSlicesOptions;
-  document.getElementById("num-slices").onchange = loadSettings;
-  var sliceDifferenceOptions = '';
-  for (var i = 1; i <= 16; i++){
-    sliceDifferenceOptions += `<option value="${i}">${i}</option>`;
-  }
-  document.getElementById("slice-difference").innerHTML = sliceDifferenceOptions;
-  document.getElementById("slice-difference").onchange = loadSettings;
-  var groupWidthOptions = '';
-  for (var i = 1; i <= 19; i++){
-    var v = i*50;
-    groupWidthOptions += `<option value="${v}">${v}</option>`;
-  }
-  document.getElementById("group-width").innerHTML = groupWidthOptions;
-  document.getElementById("group-width").onchange = loadSettings;
 
   // mobile
   document.addEventListener('touchmove', function(e) {
@@ -109,4 +121,5 @@
   }
 
   draw();
+  fillSettings();
 })();
