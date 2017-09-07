@@ -10,6 +10,10 @@ function NewRainbowSettings(stepDelta, phaseDelta, colorRange){
   }
 }
 
+function NewBlackAndWhiteSettings(stepDelta, colorRange){
+  return NewRainbowSettings(stepDelta, 0, 80);
+}
+
 function NewRainbow(){
   // https://krazydad.com/tutorials/makecolors.php
   function byte2Hex(n)
