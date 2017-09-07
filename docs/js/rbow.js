@@ -1,17 +1,10 @@
 
-function NewRainbowSettings(stepDelta, phaseDelta, colorRange){
-  if (stepDelta === undefined) {stepDelta = 0;}
-  if (phaseDelta === undefined) {phaseDelta = 2;}
-  if (colorRange === undefined) {colorRange = 127;}
-  return {
-    stepDelta: stepDelta,
-    phaseDelta: phaseDelta,
-    colorRange: colorRange,
+function NewRainbowSettings(args){
+  var defaults = {
+    phaseDelta: 2,
+    colorRange: 127,
   }
-}
-
-function NewBlackAndWhiteSettings(stepDelta, colorRange){
-  return NewRainbowSettings(stepDelta, 0, 80);
+  return Object.assign(defaults, args);
 }
 
 function NewRainbow(){
@@ -26,9 +19,9 @@ function NewRainbow(){
   }
   function makeColorGradient(frequency1, frequency2, frequency3, step, settings){
     var center = 128;
-    var red = Math.sin(frequency1*step + (0 * settings.phaseDelta)) * settings.colorRange + center;
-    var grn = Math.sin(frequency2*step + (1 * settings.phaseDelta)) * settings.colorRange + center;
-    var blu = Math.sin(frequency3*step + (2 * settings.phaseDelta)) * settings.colorRange + center;
+    var red = (Math.sin((frequency1 * step) + (0 * settings.phaseDelta)) * settings.colorRange) + center;
+    var grn = (Math.sin((frequency2 * step) + (1 * settings.phaseDelta)) * settings.colorRange) + center;
+    var blu = (Math.sin((frequency3 * step) + (2 * settings.phaseDelta)) * settings.colorRange) + center;
     return RGB2Color(red,grn,blu);
   }
 
@@ -51,13 +44,13 @@ function NewRainbow(){
   function getGradientAtStep(step, settings){
     return [
       getAtStep(step, settings),
-      getAtStep(step + settings.stepDelta, settings),
+      getAtStep(step + self.gradientDelta, settings),
     ];
   }
 
   function getGradient(settings){
-    var step = Math.floor(self.counter / self.stepFreq);
-    return getGradientAtStep(step + settings.stepDelta, settings);
+    var step = Math.floor(self.counter / self.stepFreq) + (settings.sliceDifference * settings.sliceIndex);
+    return getGradientAtStep(step, settings);
   }
 
   function step(){

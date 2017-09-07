@@ -36,13 +36,20 @@
     var numSlices = parseInt(document.getElementById("num-slices").value);
     var sliceDifference = parseInt(document.getElementById("slice-difference").value);
     var groupWidth = parseInt(document.getElementById("group-width").value);
-    patterns.newCustom(numSlices, sliceDifference, groupWidth);
+    patterns.newCustom({
+      phaseDelta: 2,
+      colorRange: 127,
+      numSlices: numSlices,
+      sliceDifference: sliceDifference,
+      groupWidth: groupWidth,
+      tiling: 1,
+    });
   }
   function fillSettings(){
     var settings = patterns.get().getSettings();
-    document.getElementById("num-slices").value = settings.numSlices || 1;
-    document.getElementById("slice-difference").value = settings.sliceDifference || 1;
-    document.getElementById("group-width").value = settings.groupWidth || 200;
+    document.getElementById("num-slices").value = settings.numSlices;
+    document.getElementById("slice-difference").value = settings.sliceDifference;
+    document.getElementById("group-width").value = settings.groupWidth;
   }
   function nextPattern(){
     patterns.next();
@@ -109,4 +116,5 @@
   }
 
   draw();
+  fillSettings();
 })();

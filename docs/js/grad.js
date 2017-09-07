@@ -1,7 +1,6 @@
 
 function NewGradientModifier(rbow){
   function rainbow(g, rainbowSettings){
-    rainbowSettings = rainbowSettings || NewRainbowSettings();
     var colors = rbow.getGradient(rainbowSettings);
     g.addColorStop(0, colors[0]);
     g.addColorStop(1, colors[1]);
@@ -18,7 +17,7 @@ function NewGradientModifier(rbow){
     var grads = [];
     for (var i = 0; i < settings.numSlices; i++){
       var newSettings = Object.assign({}, settings);
-      newSettings.stepDelta = i * settings.sliceDifference;
+      newSettings.sliceIndex = i;
       var gm = rainbowWrapper(newSettings);
       grads.push(gm);
     }
