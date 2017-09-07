@@ -35,21 +35,19 @@ function NewSpikePattern(canvasFunc, gradientBlueprint, settings){
 }
 
 function NewRainbowPatterns(cvas, grad){
-  var bw = NewRainbowSettings({phaseDelta: 0, colorRange: 80});
-  var color = NewRainbowSettings();
   var patterns = [
-    NewSimplePattern(cvas.drawCircle, grad.rainbow, color),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, Object.assign({numSlices: 3, sliceDifference: 5, groupWidth: 150}, color)),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, Object.assign({numSlices: 4, sliceDifference: 2, groupWidth: 150}, color)),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, Object.assign({numSlices: 32, sliceDifference: 1, groupWidth: 500}, color)),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, Object.assign({numSlices: 16, sliceDifference: 8, groupWidth: 500}, color)),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, Object.assign({numSlices: 32, sliceDifference: 16, groupWidth: 500}, color)),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, Object.assign({numSlices: 16, sliceDifference: 1, groupWidth: 950}, color)),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, Object.assign({numSlices: 9, sliceDifference: 4, groupWidth: 500}, color)),
-    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, Object.assign({numSlices: 9, sliceDifference: 4, groupWidth: 150, tiling: 2}, color)),
-    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, Object.assign({numSlices: 3, sliceDifference: 5, groupWidth: 150, tiling: 3}, color)),
-    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, Object.assign({numSlices: 32, sliceDifference: 16, groupWidth: 500, tiling: 3}, color)),
-    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, Object.assign({numSlices: 3, sliceDifference: 5, groupWidth: 150}, bw)),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 1, sliceDifference: 1, groupWidth: 950})),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150})),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 4, sliceDifference: 2, groupWidth: 150})),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 32, sliceDifference: 1, groupWidth: 500})),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 16, sliceDifference: 8, groupWidth: 500})),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 32, sliceDifference: 16, groupWidth: 500})),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 16, sliceDifference: 1, groupWidth: 950})),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 9, sliceDifference: 4, groupWidth: 500})),
+    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 9, sliceDifference: 4, groupWidth: 150, tiling: 2})),
+    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, tiling: 3})),
+    NewSpikePattern(cvas.drawCenteredSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 32, sliceDifference: 16, groupWidth: 500, tiling: 3})),
+    NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 0, colorRange: 80})),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 1})),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 2})),
     NewSpikePattern(cvas.drawTrackingSpikes, grad.rainbowSeries, NewRainbowSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 3})),
@@ -66,9 +64,12 @@ function NewRainbowPatterns(cvas, grad){
     return patterns[index];
   }
   function next(delta){
-    delta = delta || 1;
-    customPattern = null;
-    patternIndex = (patterns.length + patternIndex + delta) % patterns.length;
+    if (customPattern){
+      customPattern = null;
+    } else {
+      delta = delta || 1;
+      patternIndex = (patterns.length + patternIndex + delta) % patterns.length;
+    }
   }
   function back(){
     next(-1);
