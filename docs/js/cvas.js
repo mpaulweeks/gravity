@@ -22,9 +22,10 @@ function NewCanvas(){
   function getMousePos(evt) {
     // https://stackoverflow.com/a/17130415/6461842
     var rect = canvas.getBoundingClientRect();
+    var {canvasW, canvasH} = getCanvasSettings();
     return {
-      x: evt.clientX - rect.left,
-      y: evt.clientY - rect.top
+      x: Math.min(canvasW - 1 , evt.clientX - rect.left),
+      y: Math.min(canvasH - 1, evt.clientY - rect.top),
     };
   }
   function setMousePos(evt){
@@ -55,35 +56,30 @@ function NewCanvas(){
     ctx.fillRect(0,0,canvasW,canvasH);
   }
 
-  function drawCenteredSpikes(gms, settings){
+  function drawTilingSpikes(gms, settings){
     var {canvasW, canvasH} = getCanvasSettings();
-    var xChunk = 1 + Math.floor(canvasW / settings.tiling);
-    var yChunk = 1 + Math.floor(canvasH / settings.tiling);
+    var xChunk = Math.ceil(canvasW / settings.tiling);
+    var yChunk = Math.ceil(canvasH / settings.tiling);
     for (var x = 0; x < settings.tiling; x++){
       settings.minX = x * xChunk;
       settings.maxX = (x + 1) * xChunk;
       for (var y = 0; y < settings.tiling; y++){
         settings.minY = y * yChunk;
         settings.maxY = (y + 1) * yChunk;
-        settings.origin = {
-          x: Math.floor((settings.maxX - settings.minX)/2 + settings.minX),
-          y: Math.floor((settings.maxY - settings.minY)/2 + settings.minY),
-        };
+        if (settings.centered){
+          settings.origin = {
+            x: Math.floor((settings.maxX - settings.minX)/2 + settings.minX),
+            y: Math.floor((settings.maxY - settings.minY)/2 + settings.minY),
+          };
+        } else {
+          settings.origin = {
+            x: currMouse.x % xChunk + settings.minX,
+            y: currMouse.y % yChunk + settings.minY,
+          }
+        }
         drawGenericSpikes(gms, settings);
       }
     }
-  }
-
-  function drawTrackingSpikes(gms, settings){
-    var {canvasW, canvasH} = getCanvasSettings();
-    Object.assign(settings, {
-      origin: currMouse,
-      minX: 0,
-      minY: 0,
-      maxX: canvasW,
-      maxY: canvasH,
-    });
-    drawGenericSpikes(gms, settings);
   }
 
   function drawGenericSpikes(gms, settings){
@@ -98,8 +94,8 @@ function NewCanvas(){
     var maxLength = Math.max(cWidth, cHeight);
     var xSpikes = Math.max(1, Math.floor(cWidth / groupWidth));
     var ySpikes = Math.max(1, Math.floor(cHeight / groupWidth));
-    var xChunk = 1 + Math.floor(cWidth / (numGradients*xSpikes));
-    var yChunk = 1 + Math.floor(cHeight / (numGradients*ySpikes));
+    var xChunk = Math.ceil(cWidth / (numGradients*xSpikes));
+    var yChunk = Math.ceil(cHeight / (numGradients*ySpikes));
     gms.forEach(function (gradientModifier, gio){
       var grad = gradientModifier(ctx.createRadialGradient(origin.x, origin.y, 0, origin.x, origin.y, maxLength));
       ctx.fillStyle = grad;
@@ -140,6 +136,94 @@ function NewCanvas(){
     });
   }
 
+  function drawSpikesPattern(gms, settings){
+    // wip, seems to have degrading performance, maybe fixed if re-using pattern canvas?
+    // https://stackoverflow.com/a/5533583
+    var {canvasW, canvasH} = getCanvasSettings();
+    var xChunk = Math.ceil(canvasW / settings.tiling);
+    var yChunk = Math.ceil(canvasH / settings.tiling);
+    settings.minX = 0;
+    settings.maxX = xChunk;
+    settings.minY = 0;
+    settings.maxY = yChunk;
+    if (settings.centered){
+      settings.origin = {
+        x: Math.floor((settings.maxX - settings.minX)/2 + settings.minX),
+        y: Math.floor((settings.maxY - settings.minY)/2 + settings.minY),
+      };
+    } else {
+      settings.origin = {
+        x: currMouse.x % xChunk + settings.minX,
+        y: currMouse.y % yChunk + settings.minY,
+      }
+    }
+    var pattern = document.createElement('canvas');
+    createPattern(pattern, gms, settings);
+    ctx.rect(0, 0, canvasW, canvasH);
+    ctx.fillStyle = ctx.createPattern(pattern, "repeat");
+    ctx.fill();
+    pattern.remove();
+  }
+
+  function createPattern(pattern, gms, settings){
+    var {
+      origin,
+      minX, maxX, minY, maxY,
+      groupWidth,
+    } = settings;
+    var numGradients = gms.length;
+    var cWidth = maxX - minX;
+    var cHeight = maxY - minY;
+
+    pattern.width = cWidth;
+    pattern.height = cHeight;
+    var pctx = pattern.getContext('2d');
+
+    var maxLength = Math.max(cWidth, cHeight);
+    var xSpikes = Math.max(1, Math.floor(cWidth / groupWidth));
+    var ySpikes = Math.max(1, Math.floor(cHeight / groupWidth));
+    var xChunk = Math.ceil(cWidth / (numGradients*xSpikes));
+    var yChunk = Math.ceil(cHeight / (numGradients*ySpikes));
+    gms.forEach(function (gradientModifier, gio){
+      var grad = gradientModifier(pctx.createRadialGradient(origin.x, origin.y, 0, origin.x, origin.y, maxLength));
+      pctx.fillStyle = grad;
+      for (var si = 0; si < ySpikes; si++){
+        var gi = gio;
+        pctx.beginPath();
+        pctx.moveTo(minX, minY + ((gi + 0) * yChunk) + (si * yChunk * numGradients));
+        pctx.lineTo(origin.x, origin.y);
+        pctx.lineTo(minX, minY + ((gi + 1) * yChunk) + (si * yChunk * numGradients));
+        pctx.closePath();
+        pctx.fill();
+
+        gi = numGradients - (1 + gi);
+        pctx.beginPath();
+        pctx.moveTo(maxX, minY + ((gi + 0) * yChunk) + (si * yChunk * numGradients));
+        pctx.lineTo(origin.x, origin.y);
+        pctx.lineTo(maxX, minY + ((gi + 1) * yChunk) + (si * yChunk * numGradients));
+        pctx.closePath();
+        pctx.fill();
+      }
+      for (var si = 0; si < xSpikes; si++){
+        var gi = gio;
+        pctx.beginPath();
+        pctx.moveTo(minX + ((gi + 0) * xChunk) + (si * xChunk * numGradients), maxY);
+        pctx.lineTo(origin.x, origin.y);
+        pctx.lineTo(minX + ((gi + 1) * xChunk) + (si * xChunk * numGradients), maxY);
+        pctx.closePath();
+        pctx.fill();
+
+        gi = numGradients - (1 + gi);
+        pctx.beginPath();
+        pctx.moveTo(minX + ((gi + 0) * xChunk) + (si * xChunk * numGradients), minY);
+        pctx.lineTo(origin.x, origin.y);
+        pctx.lineTo(minX + ((gi + 1) * xChunk) + (si * xChunk * numGradients), minY);
+        pctx.closePath();
+        pctx.fill();
+      }
+    });
+  }
+
   function drawRing(ring){
     var gradient = ctx.createRadialGradient(
       ring.origin.x, ring.origin.y, ring.getInner(),
@@ -160,8 +244,7 @@ function NewCanvas(){
     setMousePos: setMousePos,
     getMousePos: getMousePos,
     drawCircle: drawCircle,
-    drawTrackingSpikes: drawTrackingSpikes,
-    drawCenteredSpikes: drawCenteredSpikes,
+    drawTilingSpikes: drawTilingSpikes,
     drawRing: drawRing,
   };
 }
