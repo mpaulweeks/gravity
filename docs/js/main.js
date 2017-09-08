@@ -33,11 +33,15 @@
   }
 
   var settingsElms = [];
-  function NewSetting(name, iStart, iEnd, iDelta, description){
+  function NewSetting(name, iStart, iEnd, iDelta, description, isBoolean){
     var idSelector = 'settings-' + name;
     var optionsHTML = '';
     for (var i = iStart; i <= iEnd; i += iDelta){
-      optionsHTML += `<option value="${i}">${i}</option>`;
+      var display = i;
+      if (isBoolean){
+        display = Boolean(i);
+      }
+      optionsHTML += `<option value="${i}">${display}</option>`;
     }
     var newDiv =  document.createElement("div");
     newDiv.innerHTML = `<label>${description}</label><select class="settings-select" id="${idSelector}">${optionsHTML}</select>`;
@@ -62,8 +66,8 @@
   NewSetting('numSlices', 1, 32, 1, 'number of Slices per Group');
   NewSetting('sliceDifference', 0, 16, 1, 'color difference between Slices');
   NewSetting('groupWidth', 50, 950, 50, 'Group width in pixels');
-  NewSetting('centered', 0, 1, 1, 'is always centered');
-  NewSetting('tiling', 1, 3, 1, 'number of displays across');
+  NewSetting('centered', 0, 1, 1, 'is always centered', true);
+  NewSetting('tiling', 1, 5, 1, 'number of displays across');
 
   function loadSettings(){
     var newSettings = {};
