@@ -62,7 +62,8 @@
   NewSetting('numSlices', 1, 32, 1, 'number of Slices per Group');
   NewSetting('sliceDifference', 0, 16, 1, 'color difference between Slices');
   NewSetting('groupWidth', 50, 950, 50, 'Group width in pixels');
-  // NewSetting('tiling', 1, 3, 1, 'number of displays across');
+  NewSetting('centered', 0, 1, 1, 'is always centered');
+  NewSetting('tiling', 1, 3, 1, 'number of displays across');
 
   function loadSettings(){
     var newSettings = {};

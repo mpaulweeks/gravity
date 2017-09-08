@@ -55,35 +55,30 @@ function NewCanvas(){
     ctx.fillRect(0,0,canvasW,canvasH);
   }
 
-  function drawCenteredSpikes(gms, settings){
+  function drawTilingSpikes(gms, settings){
     var {canvasW, canvasH} = getCanvasSettings();
-    var xChunk = 1 + Math.floor(canvasW / settings.tiling);
-    var yChunk = 1 + Math.floor(canvasH / settings.tiling);
+    var xChunk = Math.ceil(canvasW / settings.tiling);
+    var yChunk = Math.ceil(canvasH / settings.tiling);
     for (var x = 0; x < settings.tiling; x++){
       settings.minX = x * xChunk;
       settings.maxX = (x + 1) * xChunk;
       for (var y = 0; y < settings.tiling; y++){
         settings.minY = y * yChunk;
         settings.maxY = (y + 1) * yChunk;
-        settings.origin = {
-          x: Math.floor((settings.maxX - settings.minX)/2 + settings.minX),
-          y: Math.floor((settings.maxY - settings.minY)/2 + settings.minY),
-        };
+        if (settings.centered){
+          settings.origin = {
+            x: Math.floor((settings.maxX - settings.minX)/2 + settings.minX),
+            y: Math.floor((settings.maxY - settings.minY)/2 + settings.minY),
+          };
+        } else {
+          settings.origin = {
+            x: currMouse.x % xChunk + settings.minX,
+            y: currMouse.y % yChunk + settings.minY,
+          }
+        }
         drawGenericSpikes(gms, settings);
       }
     }
-  }
-
-  function drawTrackingSpikes(gms, settings){
-    var {canvasW, canvasH} = getCanvasSettings();
-    Object.assign(settings, {
-      origin: currMouse,
-      minX: 0,
-      minY: 0,
-      maxX: canvasW,
-      maxY: canvasH,
-    });
-    drawGenericSpikes(gms, settings);
   }
 
   function drawGenericSpikes(gms, settings){
@@ -98,8 +93,8 @@ function NewCanvas(){
     var maxLength = Math.max(cWidth, cHeight);
     var xSpikes = Math.max(1, Math.floor(cWidth / groupWidth));
     var ySpikes = Math.max(1, Math.floor(cHeight / groupWidth));
-    var xChunk = 1 + Math.floor(cWidth / (numGradients*xSpikes));
-    var yChunk = 1 + Math.floor(cHeight / (numGradients*ySpikes));
+    var xChunk = Math.ceil(cWidth / (numGradients*xSpikes));
+    var yChunk = Math.ceil(cHeight / (numGradients*ySpikes));
     gms.forEach(function (gradientModifier, gio){
       var grad = gradientModifier(ctx.createRadialGradient(origin.x, origin.y, 0, origin.x, origin.y, maxLength));
       ctx.fillStyle = grad;
@@ -160,8 +155,7 @@ function NewCanvas(){
     setMousePos: setMousePos,
     getMousePos: getMousePos,
     drawCircle: drawCircle,
-    drawTrackingSpikes: drawTrackingSpikes,
-    drawCenteredSpikes: drawCenteredSpikes,
+    drawTilingSpikes: drawTilingSpikes,
     drawRing: drawRing,
   };
 }

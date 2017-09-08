@@ -3,6 +3,8 @@ function NewRainbowSettings(args){
   var defaults = {
     phaseDelta: 2,
     colorRange: 127,
+    tiling: 1,
+    centered: 0,
   }
   return Object.assign(defaults, args);
 }
