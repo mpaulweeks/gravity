@@ -137,7 +137,8 @@ function NewCanvas(){
   }
 
   function drawSpikesPattern(gms, settings){
-    // experiment, seems to have degrading performance
+    // wip, seems to have degrading performance, maybe fixed if re-using pattern canvas?
+    // https://stackoverflow.com/a/5533583
     var {canvasW, canvasH} = getCanvasSettings();
     var xChunk = Math.ceil(canvasW / settings.tiling);
     var yChunk = Math.ceil(canvasH / settings.tiling);

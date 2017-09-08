@@ -39,7 +39,7 @@
     for (var i = iStart; i <= iEnd; i += iDelta){
       var display = i;
       if (isBoolean){
-        display = Boolean(i);
+        display = i ? 'yes' : 'no';
       }
       optionsHTML += `<option value="${i}">${display}</option>`;
     }
@@ -66,7 +66,7 @@
   NewSetting('numSlices', 1, 32, 1, 'number of Slices per Group');
   NewSetting('sliceDifference', 0, 16, 1, 'color difference between Slices');
   NewSetting('groupWidth', 50, 950, 50, 'Group width in pixels');
-  NewSetting('centered', 0, 1, 1, 'is always centered', true);
+  NewSetting('centered', 0, 1, 1, 'is always centered?', true);
   NewSetting('tiling', 1, 5, 1, 'number of displays across');
 
   function loadSettings(){
