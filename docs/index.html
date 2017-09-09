@@ -1,6 +1,7 @@
 <head>
   <title>GOOD VIBES 🌈🌈🌈</title>
   <link rel="icon" type="image/icon" href="preview.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- https://developers.facebook.com/tools/debug/sharing/ -->
   <meta property="og:url"                content="http://vibe.mpaulweeks.com" />
   <meta property="og:type"               content="website" />
@@ -16,6 +17,12 @@
     }
     a {
       color: #91D2FA;
+    }
+    button:hover {
+      cursor: pointer;
+    }
+    input:hover {
+      cursor: pointer;
     }
     #main {
       cursor: none;
@@ -67,7 +74,7 @@
   </style>
 </head>
 <body>
-  <div id="scroll-info" class="scroll-info hidden">
+  <div id="info-desktop" class="scroll-info hidden">
     MOVE YOUR MOUSE
     <br/>
     CLICK ANYWHERE
@@ -76,6 +83,12 @@
     <br/>
     <br/>
     SCROLL DOWN FOR MORE INFO
+  </div>
+  <div id="info-mobile" class="scroll-info hidden">
+    TAP TO CHANGE PATTERN
+    <br/>
+    <br/>
+    DRAG TO CHANGE FOCUS
   </div>
   <div id="main"><canvas id="canvas"></canvas></div>
   <div id="footer">

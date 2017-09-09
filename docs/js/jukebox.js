@@ -43,8 +43,8 @@ function NewJukebox(tracks){
   infoElm.innerHTML = `
       <div>you are currently listening to</div>
       <div><a id="jukebox-url" target="_blank" href=""></a></div>
-      <input type="button" id="jukebox-toggle" value="loading..." />
-      <input type="button" id="jukebox-next" value="next track" />
+      <button id="jukebox-toggle" >loading...</button>
+      <button id="jukebox-next">next track</button>
   `;
   var urlElm = document.getElementById('jukebox-url');
   var toggleElm = document.getElementById('jukebox-toggle');
@@ -68,10 +68,10 @@ function NewJukebox(tracks){
   function enforceJukebox(){
     if (jukeboxPlaying){
       audioElm.play();
-      toggleElm.value = 'stop music';
+      toggleElm.innerHTML = 'stop music';
     } else {
       audioElm.pause();
-      toggleElm.value = 'play music';
+      toggleElm.innerHTML = 'play music';
     }
     setCookie(COOKIE_MUTE, !jukeboxPlaying, 7);
   }
