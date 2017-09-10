@@ -16,7 +16,7 @@
       'song',
       'TheFatRat_TimeLapse.mp3',
       'TheFatRat - Time Lapse',
-      'https://the-arcadium.net/tracks/time-lapse'
+      'https://lnk.to/tfrtimelapse'
     ),
     NewTrack(
       'song',
