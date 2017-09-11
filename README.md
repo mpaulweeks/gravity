@@ -17,3 +17,7 @@ misc visualizations
 - keyboard controls, seperate logic/draw threads
   - seperate rbow.step from draw thread? worth a try
 - midi sound effect on ring grab
+- Rotate around center
+  - Left/right are satellite, up/down are  radius 
+  - Avoid triangle slices
+  - Triangle slices flash with full blue/green rainbow, then attack with red rainbow effect
