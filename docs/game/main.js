@@ -3,8 +3,8 @@
   var cvas = NewCanvas();
   var rbow = NewRainbow();
   var grad = NewGradientModifier(rbow);
-  // var pattern = NewSimplePattern(cvas.drawCircle, grad.rainbow, NewRainbowSettings({centered: 1, phaseDelta: 0, colorRange: 80}));
-  var pattern = NewSpikePattern(cvas.drawTilingSpikes, grad.rainbowSeries, NewRainbowSettings({centered: 1, numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 0, colorRange: 80}));
+  // var pattern = NewSimplePattern(cvas.drawCircle, grad.rainbow, NewRainbowSettings({centered: 1, phaseDelta: 0, colorFloor: 80, colorRange: 80}));
+  var pattern = NewSpikePattern(cvas.drawTilingSpikes, grad.rainbowSeries, NewRainbowSettings({centered: 1, numSlices: 4, sliceDifference: 2, groupWidth: 150, phaseDelta: 0, colorFloor: 80, colorRange: 80}));
   var ringm = NewRingManager();
   var hero = (function(){
     var origin = {x: 100, y:100};
