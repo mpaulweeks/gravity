@@ -1,5 +1,5 @@
 
-function NewRainbowSettings(args){
+function NewSettings(args){
   var defaults = {
     phaseDelta: 2,
     colorFreq: 0.2,
