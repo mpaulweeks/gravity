@@ -1,29 +1,36 @@
 
 (function (){
-  var raf;
   var cvas = NewCanvas();
   var rbow = NewRainbow();
   var grad = NewGradientModifier(rbow);
-  var patterns = NewRainbowPatterns(cvas, grad);
-  patterns.next();
-  patterns.next();
+  // var pattern = NewSimplePattern(cvas.drawCircle, grad.rainbow, NewRainbowSettings({centered: 1, phaseDelta: 0, colorRange: 80}));
+  var pattern = NewSpikePattern(cvas.drawTilingSpikes, grad.rainbowSeries, NewRainbowSettings({centered: 1, numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 0, colorRange: 80}));
   var ringm = NewRingManager();
+  var hero = (function(){
+    var origin = {x: 100, y:100};
+    var xDelta = 5;
+    return {
+      origin: origin,
+      inputBuffer: {},
+      moveRight: function(){
+        origin.x += xDelta;
+      },
+      moveLeft: function(){
+        origin.x -= xDelta;
+      },
+    };
+  })();
 
-  function draw(){
-    patterns.get().process();
-    ringm.draw(cvas);
-
-    ringm.step();
-    rbow.step();
-
-    raf = window.requestAnimationFrame(draw);
+  document.body.onkeydown = function(e){
+    hero.inputBuffer[e.keyCode] = true;
   }
-
+  document.body.onkeyup = function(e){
+    hero.inputBuffer[e.keyCode] = false;
+  }
   canvas.addEventListener('click', function(e) {
     ringm.newRing(cvas.getMousePos(e), 300);
   });
 
-  // rbow.stepFreq = 20;
-
-  draw();
+  NewGame(rbow, ringm, hero).init();
+  NewGraphics(cvas, pattern, ringm, hero).init();
 })();

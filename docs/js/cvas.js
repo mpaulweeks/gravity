@@ -49,8 +49,15 @@ function NewCanvas(){
 
   function drawCircle(gradientModifier, settings){
     var {canvasW, canvasH} = getCanvasSettings();
+    var origin = currMouse;
+    if (settings.centered){
+      origin = {
+        x: Math.floor(canvasW/2),
+        y: Math.floor(canvasH/2),
+      }
+    }
     var maxLength = Math.max(canvasW, canvasH);
-    var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength);
+    var gradient = ctx.createRadialGradient(origin.x, origin.y, 0, origin.x, origin.y, maxLength);
     gradientModifier(gradient, settings);
     ctx.fillStyle = gradient;
     ctx.fillRect(0,0,canvasW,canvasH);
@@ -80,6 +87,11 @@ function NewCanvas(){
         drawGenericSpikes(gms, settings);
       }
     }
+  }
+
+  function drawHero(hero){
+    ctx.fillStyle = "red";
+    ctx.fillRect(hero.origin.x - 10, hero.origin.y - 10, 20, 20);
   }
 
   function drawGenericSpikes(gms, settings){
@@ -246,5 +258,6 @@ function NewCanvas(){
     drawCircle: drawCircle,
     drawTilingSpikes: drawTilingSpikes,
     drawRing: drawRing,
+    drawHero: drawHero,
   };
 }
