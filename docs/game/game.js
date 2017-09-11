@@ -6,13 +6,7 @@ function NewGame(rbow, ringm, hero){
   function theLoop(){
     var start = new Date();
 
-    if (hero.inputBuffer[39]){
-      hero.moveRight();
-    }
-    if (hero.inputBuffer[37]){
-      hero.moveLeft();
-    }
-
+    hero.processInput();
     ringm.step();
     rbow.step();
 

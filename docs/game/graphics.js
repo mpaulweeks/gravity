@@ -1,10 +1,10 @@
 
-function NewGraphics(cvas, pattern, ringm, hero){
+function NewGraphics(pattern, ringm, hero){
   var raf;
   function draw(){
     pattern.draw();
-    ringm.draw(cvas);
-    cvas.drawHero(hero);
+    ringm.draw();
+    hero.draw();
 
     raf = window.requestAnimationFrame(draw);
   }

@@ -50,7 +50,7 @@ function NewRing(coord, maxRadius){
   });
 }
 
-function NewRingManager(){
+function NewRingManager(cvas){
   var rings = [];
 
   function newRing(coord, maxRadius){
@@ -59,13 +59,13 @@ function NewRingManager(){
     return r;
   }
 
-  function draw(cvas){
+  function draw(){
     rings.forEach(function(ring){
       cvas.drawRing(ring);
     });
   }
 
-  function step(cvas){
+  function step(){
     var shouldCheck = false;
     rings.forEach(function(ring){
       shouldCheck = shouldCheck || ring.step();
