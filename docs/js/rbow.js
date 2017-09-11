@@ -1,6 +1,7 @@
 
 function NewSettings(args){
   var defaults = {
+    sliceIndex: 0,
     phaseDelta: 2,
     colorFreq: 0.2,
     colorRange: 127,

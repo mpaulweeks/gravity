@@ -2,7 +2,7 @@
 function NewGraphics(cvas, pattern, ringm, hero){
   var raf;
   function draw(){
-    pattern.process();
+    pattern.draw();
     ringm.draw(cvas);
     cvas.drawHero(hero);
 

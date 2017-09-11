@@ -27,7 +27,7 @@
   ]);
 
   function draw(){
-    patterns.get().process();
+    patterns.get().draw();
     rbow.step();
     raf = window.requestAnimationFrame(draw);
   }

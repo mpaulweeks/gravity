@@ -1,6 +1,6 @@
 
 function NewPattern(canvasFunc, gradientFactory, settings){
-  function process(){
+  function draw(){
     return canvasFunc(gradientFactory, settings);
   }
   function getSettings(){
@@ -8,24 +8,18 @@ function NewPattern(canvasFunc, gradientFactory, settings){
   }
 
   return {
-    process: process,
+    draw: draw,
     getSettings: getSettings,
   };
 }
 
 function NewSimplePattern(canvasFunc, grad, settings){
-  var defaults= {
-    sliceIndex: 0,
-    sliceDifference: 0,
-  };
-  var newSettings = Object.assign(defaults, settings);
-  return NewPattern(canvasFunc, grad.rainbow, newSettings);
+  return NewPattern(canvasFunc, grad.rainbow, settings);
 }
 
 function NewSpikePattern(canvasFunc, grad, settings){
   var defaults = {
     numSlices: 3,
-    sliceDifference: 5,
     groupWidth: 200,
     tiling: 1,
   };
