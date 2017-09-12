@@ -90,8 +90,17 @@ function NewCanvas(){
   }
 
   function drawHero(hero){
+    var {canvasW, canvasH} = getCanvasSettings();
+    var center = {
+      x: Math.floor(canvasW/2),
+      y: Math.floor(canvasH/2),
+    }
+    var origin = hero.calcOrigin(center);
     ctx.fillStyle = "red";
-    ctx.fillRect(hero.origin.x - 10, hero.origin.y - 10, 20, 20);
+    ctx.beginPath();
+    ctx.arc(origin.x, origin.y, 10, 0, 2*Math.PI);
+    ctx.closePath();
+    ctx.fill();
   }
 
   function drawGenericSpikes(gms, settings){
@@ -252,6 +261,7 @@ function NewCanvas(){
 
   return {
     elm: canvas,
+    getCanvasSettings: getCanvasSettings,
     goFullScreen: goFullScreen,
     setMousePos: setMousePos,
     getMousePos: getMousePos,

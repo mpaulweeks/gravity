@@ -2,6 +2,7 @@
 function NewSettings(args){
   var defaults = {
     sliceIndex: 0,
+    sliceDifference: 0,
     phaseDelta: 2,
     colorFreq: 0.2,
     colorRange: 127,
@@ -17,7 +18,11 @@ function NewGradientModifier(){
   const stepFreq = 5; // 5 for circles, 20 for triangles
   var counter = 0;
 
-  function getGradient(settings){
+  function step(){
+    counter = (counter + 1) % 1000000;
+  }
+
+  function getGradientColors(settings){
     var step = Math.floor(counter / stepFreq) + (settings.sliceDifference * settings.sliceIndex);
     return [
       GetRainbowColor(step, settings),
@@ -25,12 +30,8 @@ function NewGradientModifier(){
     ];
   }
 
-  function step(){
-    counter = (counter + 1) % 1000000;
-  }
-
   function rainbow(g, settings){
-    var colors = getGradient(settings);
+    var colors = getGradientColors(settings);
     g.addColorStop(0, colors[0]);
     g.addColorStop(1, colors[1]);
     return g;
