@@ -2,8 +2,7 @@
 (function (){
   var raf;
   var cvas = NewCanvas();
-  var rbow = NewRainbow();
-  var grad = NewGradientModifier(rbow);
+  var grad = NewGradientModifier();
   var patterns = NewRainbowPatterns(cvas, grad);
   var jukebox = NewJukebox([
     NewTrack(
@@ -28,7 +27,7 @@
 
   function draw(){
     patterns.get().draw();
-    rbow.step();
+    grad.step();
     raf = window.requestAnimationFrame(draw);
   }
 

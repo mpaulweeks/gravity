@@ -1,7 +1,36 @@
 
-function NewGradientModifier(rbow){
+function NewSettings(args){
+  var defaults = {
+    sliceIndex: 0,
+    phaseDelta: 2,
+    colorFreq: 0.2,
+    colorRange: 127,
+    colorFloor: 128,
+    tiling: 1,
+    centered: 0,
+  }
+  return Object.assign(defaults, args);
+}
+
+function NewGradientModifier(){
+  const gradientDelta = 8;
+  const stepFreq = 5; // 5 for circles, 20 for triangles
+  var counter = 0;
+
+  function getGradient(settings){
+    var step = Math.floor(counter / stepFreq) + (settings.sliceDifference * settings.sliceIndex);
+    return [
+      GetRainbowColor(step, settings),
+      GetRainbowColor(step + gradientDelta, settings),
+    ];
+  }
+
+  function step(){
+    counter = (counter + 1) % 1000000;
+  }
+
   function rainbow(g, settings){
-    var colors = rbow.getGradient(settings);
+    var colors = getGradient(settings);
     g.addColorStop(0, colors[0]);
     g.addColorStop(1, colors[1]);
     return g;
@@ -25,6 +54,7 @@ function NewGradientModifier(rbow){
   }
 
   return {
+    step: step,
     rainbow: rainbow,
     rainbowSeries: rainbowSeries,
   }

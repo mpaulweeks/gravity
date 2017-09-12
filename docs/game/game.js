@@ -1,5 +1,5 @@
 
-function NewGame(rbow, ringm, hero){
+function NewGame(grad, ringm, hero){
   var fps = 60;
   var timeoutTarget = Math.floor(1000/fps);
 
@@ -8,7 +8,7 @@ function NewGame(rbow, ringm, hero){
 
     hero.processInput();
     ringm.step();
-    rbow.step();
+    grad.step();
 
     var end = new Date();
     var msElapsed = end - start;
