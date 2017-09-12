@@ -1,7 +1,9 @@
 
-function NewPattern(canvasFunc, gradientFactory, settings){
+function NewPattern(canvasFunc, settings){
+  var grad = NewGradientModifier();
+
   function draw(){
-    return canvasFunc(gradientFactory, settings);
+    return canvasFunc(grad.rainbowSeries(settings), settings);
   }
   function getSettings(){
     return settings;
@@ -9,42 +11,40 @@ function NewPattern(canvasFunc, gradientFactory, settings){
 
   return {
     draw: draw,
+    step: grad.step,
     getSettings: getSettings,
   };
 }
 
-function NewSimplePattern(canvasFunc, grad, settings){
-  return NewPattern(canvasFunc, grad.rainbow, settings);
+function NewSimplePattern(canvasFunc, settings){
+  return NewPattern(canvasFunc, settings);
 }
 
-function NewSpikePattern(canvasFunc, grad, settings){
+function NewSpikePattern(canvasFunc, settings){
   var defaults = {
-    numSlices: 3,
-    groupWidth: 200,
     tiling: 1,
   };
   var newSettings = Object.assign(defaults, settings);
-  var gradientFactory = grad.rainbowSeries(newSettings);
-  return NewPattern(canvasFunc, gradientFactory, newSettings);
+  return NewPattern(canvasFunc, newSettings);
 }
 
-function NewRainbowPatterns(cvas, grad){
+function NewRainbowPatterns(cvas){
   var patterns = [
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 1, sliceDifference: 0, groupWidth: 950})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 4, sliceDifference: 2, groupWidth: 150})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 32, sliceDifference: 1, groupWidth: 500})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 16, sliceDifference: 8, groupWidth: 500})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 32, sliceDifference: 16, groupWidth: 500})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 16, sliceDifference: 1, groupWidth: 950})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 9, sliceDifference: 4, groupWidth: 500})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 9, sliceDifference: 4, groupWidth: 150, tiling: 2, centered: 1})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, tiling: 3})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 32, sliceDifference: 16, groupWidth: 500, tiling: 3, centered: 1})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 0, colorRange: 80})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 1})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 3})),
-    NewSpikePattern(cvas.drawTilingSpikes, grad, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 4})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 1, sliceDifference: 0, groupWidth: 950})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 4, sliceDifference: 2, groupWidth: 150})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 32, sliceDifference: 1, groupWidth: 500})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 16, sliceDifference: 8, groupWidth: 500})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 32, sliceDifference: 16, groupWidth: 500})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 16, sliceDifference: 1, groupWidth: 950})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 9, sliceDifference: 4, groupWidth: 500})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 9, sliceDifference: 4, groupWidth: 150, tiling: 2, centered: 1})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, tiling: 3})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 32, sliceDifference: 16, groupWidth: 500, tiling: 3, centered: 1})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 0, colorRange: 80})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 1})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 3})),
+    NewSpikePattern(cvas.drawTilingSpikes, NewSettings({numSlices: 3, sliceDifference: 5, groupWidth: 150, phaseDelta: 4})),
   ];
   var patternIndex = 0;
   var customPattern = null;
@@ -68,7 +68,7 @@ function NewRainbowPatterns(cvas, grad){
     next(-1);
   }
   function newCustom(settings){
-    customPattern = NewSpikePattern(cvas.drawTilingSpikes, grad, settings);
+    customPattern = NewSpikePattern(cvas.drawTilingSpikes, settings);
   }
 
   return {

@@ -1,7 +1,7 @@
 
 function NewSettings(args){
   var defaults = {
-    sliceIndex: 0,
+    numSlices: 1,
     sliceDifference: 0,
     phaseDelta: 2,
     colorFreq: 0.2,
@@ -56,7 +56,6 @@ function NewGradientModifier(){
 
   return {
     step: step,
-    rainbow: rainbow,
     rainbowSeries: rainbowSeries,
   }
 }

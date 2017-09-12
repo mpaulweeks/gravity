@@ -1,5 +1,5 @@
 
-function NewGame(grad, ringm, hero){
+function NewGame(pattern, ringm, hero){
   var fps = 60;
   var timeoutTarget = Math.floor(1000/fps);
 
@@ -8,7 +8,7 @@ function NewGame(grad, ringm, hero){
 
     hero.processInput();
     ringm.step();
-    grad.step();
+    pattern.step();
 
     var end = new Date();
     var msElapsed = end - start;
