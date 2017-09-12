@@ -1,8 +1,8 @@
 
 (function (){
   var cvas = NewCanvas();
-  var pattern = NewSimplePattern(cvas.drawCircle, NewSettings({centered: 1, phaseDelta: 0, colorFloor: 80, colorRange: 80}));
-  // var pattern = NewSpikePattern(cvas.drawTilingSpikes, NewSettings({centered: 1, numSlices: 4, sliceDifference: 2, groupWidth: 150, phaseDelta: 0, colorFloor: 80, colorRange: 80}));
+  var pattern = NewPattern(cvas.drawCircle, {centered: 1, phaseDelta: 0, colorFloor: 80, colorRange: 80});
+  // var pattern = NewPattern(cvas.drawTilingSpikes, {centered: 1, numSlices: 4, sliceDifference: 2, groupWidth: 150, phaseDelta: 0, colorFloor: 80, colorRange: 80});
   var ringm = NewRingManager(cvas);
   var hero = NewHero(cvas);
 
