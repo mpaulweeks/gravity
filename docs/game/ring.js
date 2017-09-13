@@ -5,8 +5,7 @@ function NewRing(coord, maxRadius){
   self.maxRadius = maxRadius;
   self.radius = 50;
   self.width = 50;
-  var rbow = NewRainbow();
-  var rGrad = NewGradientModifier(rbow);
+  var rGrad = NewGradientModifier();
 
   function getGradient(r){
     var progress = (r / self.maxRadius);
@@ -31,7 +30,7 @@ function NewRing(coord, maxRadius){
   }
 
   function step(){
-    rbow.step();
+    rGrad.step();
     self.radius += 5;
     return self.radius >= self.maxRadius;
   }
@@ -50,7 +49,7 @@ function NewRing(coord, maxRadius){
   });
 }
 
-function NewRingManager(){
+function NewRingManager(cvas){
   var rings = [];
 
   function newRing(coord, maxRadius){
@@ -59,13 +58,13 @@ function NewRingManager(){
     return r;
   }
 
-  function draw(cvas){
+  function draw(){
     rings.forEach(function(ring){
       cvas.drawRing(ring);
     });
   }
 
-  function step(cvas){
+  function step(){
     var shouldCheck = false;
     rings.forEach(function(ring){
       shouldCheck = shouldCheck || ring.step();

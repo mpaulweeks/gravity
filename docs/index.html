@@ -47,6 +47,7 @@
       margin-left: 5px;
     }
     .scroll-info {
+      cursor: none;
       opacity: 1;
       background-color: #000000;
       z-index: 99;
@@ -62,11 +63,12 @@
     .fade-out {
       display: inline;
       opacity: 0;
-      -webkit-transition: opacity 5s ease-in-out;
-      -moz-transition: opacity 5s ease-in-out;
-      -ms-transition: opacity 5s ease-in-out;
-      -o-transition: opacity 5s ease-in-out;
-      transition: opacity 5s ease-in-out;
+      visibility: hidden;
+      -webkit-transition: visibility 0s 5s, opacity 5s ease-in-out;
+      -moz-transition: visibility 0s 5s, opacity 5s ease-in-out;
+      -ms-transition: visibility 0s 5s, opacity 5s ease-in-out;
+      -o-transition: visibility 0s 5s, opacity 5s ease-in-out;
+      transition: visibility 0s 5s, opacity 5s ease-in-out;
     }
     .hidden {
       display: none;
@@ -104,12 +106,12 @@
     <div class="row"><a href="https://twitter.com/mpaulweeks">@mpaulweeks</a></div>
   </div>
 
-  <script type="text/javascript" src="js/rbow.js"></script>
-  <script type="text/javascript" src="js/cvas.js"></script>
-  <script type="text/javascript" src="js/grad.js"></script>
-  <script type="text/javascript" src="js/pattern.js"></script>
-  <script type="text/javascript" src="js/jukebox.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/rbow.js?v=20170913"></script>
+  <script type="text/javascript" src="js/cvas.js?v=20170913"></script>
+  <script type="text/javascript" src="js/grad.js?v=20170913"></script>
+  <script type="text/javascript" src="js/pattern.js?v=20170913"></script>
+  <script type="text/javascript" src="js/jukebox.js?v=20170913"></script>
+  <script type="text/javascript" src="js/main.js?v=20170913"></script>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

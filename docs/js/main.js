@@ -2,9 +2,7 @@
 (function (){
   var raf;
   var cvas = NewCanvas();
-  var rbow = NewRainbow();
-  var grad = NewGradientModifier(rbow);
-  var patterns = NewRainbowPatterns(cvas, grad);
+  var patterns = NewRainbowPatterns(cvas);
   var jukebox = NewJukebox([
     NewTrack(
       'song',
@@ -27,8 +25,8 @@
   ]);
 
   function draw(){
-    patterns.get().process();
-    rbow.step();
+    patterns.get().draw();
+    patterns.get().step();
     raf = window.requestAnimationFrame(draw);
   }
 
@@ -93,6 +91,9 @@
 
   // settings/patterns
   cvas.elm.addEventListener('click', nextPattern);
+  Array.from(document.getElementsByClassName('scroll-info')).forEach(function (elm){
+    elm.addEventListener('click', nextPattern);
+  });
   document.body.onkeyup = function(e){
     if(e.keyCode == 39){ // right key
       nextPattern();

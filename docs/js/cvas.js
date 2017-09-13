@@ -47,11 +47,18 @@ function NewCanvas(){
     }
   }
 
-  function drawCircle(gradientModifier, settings){
+  function drawCircle(gms, settings){
     var {canvasW, canvasH} = getCanvasSettings();
+    var origin = currMouse;
+    if (settings.centered){
+      origin = {
+        x: Math.floor(canvasW/2),
+        y: Math.floor(canvasH/2),
+      }
+    }
     var maxLength = Math.max(canvasW, canvasH);
-    var gradient = ctx.createRadialGradient(currMouse.x, currMouse.y, 0, currMouse.x, currMouse.y, maxLength);
-    gradientModifier(gradient, settings);
+    var gradient = ctx.createRadialGradient(origin.x, origin.y, 0, origin.x, origin.y, maxLength);
+    gms[0](gradient, settings);
     ctx.fillStyle = gradient;
     ctx.fillRect(0,0,canvasW,canvasH);
   }
@@ -80,6 +87,20 @@ function NewCanvas(){
         drawGenericSpikes(gms, settings);
       }
     }
+  }
+
+  function drawHero(hero){
+    var {canvasW, canvasH} = getCanvasSettings();
+    var center = {
+      x: Math.floor(canvasW/2),
+      y: Math.floor(canvasH/2),
+    }
+    var origin = hero.calcOrigin(center);
+    ctx.fillStyle = "red";
+    ctx.beginPath();
+    ctx.arc(origin.x, origin.y, 10, 0, 2*Math.PI);
+    ctx.closePath();
+    ctx.fill();
   }
 
   function drawGenericSpikes(gms, settings){
@@ -240,11 +261,13 @@ function NewCanvas(){
 
   return {
     elm: canvas,
+    getCanvasSettings: getCanvasSettings,
     goFullScreen: goFullScreen,
     setMousePos: setMousePos,
     getMousePos: getMousePos,
     drawCircle: drawCircle,
     drawTilingSpikes: drawTilingSpikes,
     drawRing: drawRing,
+    drawHero: drawHero,
   };
 }

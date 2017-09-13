@@ -1,29 +1,21 @@
 
 (function (){
-  var raf;
   var cvas = NewCanvas();
-  var rbow = NewRainbow();
-  var grad = NewGradientModifier(rbow);
-  var patterns = NewRainbowPatterns(cvas, grad);
-  patterns.next();
-  patterns.next();
-  var ringm = NewRingManager();
+  var pattern = NewPattern(cvas.drawCircle, {centered: 1, phaseDelta: 0, colorFloor: 80, colorRange: 80});
+  // var pattern = NewPattern(cvas.drawTilingSpikes, {centered: 1, numSlices: 4, sliceDifference: 2, groupWidth: 150, phaseDelta: 0, colorFloor: 80, colorRange: 80});
+  var ringm = NewRingManager(cvas);
+  var hero = NewHero(cvas);
 
-  function draw(){
-    patterns.get().process();
-    ringm.draw(cvas);
-
-    ringm.step();
-    rbow.step();
-
-    raf = window.requestAnimationFrame(draw);
+  document.body.onkeydown = function(e){
+    hero.inputBuffer[e.keyCode] = true;
   }
-
+  document.body.onkeyup = function(e){
+    hero.inputBuffer[e.keyCode] = false;
+  }
   canvas.addEventListener('click', function(e) {
     ringm.newRing(cvas.getMousePos(e), 300);
   });
 
-  // rbow.stepFreq = 20;
-
-  draw();
+  NewGame(pattern, ringm, hero).init();
+  NewGraphics(pattern, ringm, hero).init();
 })();
