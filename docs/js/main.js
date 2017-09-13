@@ -91,6 +91,9 @@
 
   // settings/patterns
   cvas.elm.addEventListener('click', nextPattern);
+  Array.from(document.getElementsByClassName('scroll-info')).forEach(function (elm){
+    elm.addEventListener('click', nextPattern);
+  });
   document.body.onkeyup = function(e){
     if(e.keyCode == 39){ // right key
       nextPattern();

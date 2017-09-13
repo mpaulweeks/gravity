@@ -47,6 +47,7 @@
       margin-left: 5px;
     }
     .scroll-info {
+      cursor: none;
       opacity: 1;
       background-color: #000000;
       z-index: 99;
@@ -62,11 +63,12 @@
     .fade-out {
       display: inline;
       opacity: 0;
-      -webkit-transition: opacity 5s ease-in-out;
-      -moz-transition: opacity 5s ease-in-out;
-      -ms-transition: opacity 5s ease-in-out;
-      -o-transition: opacity 5s ease-in-out;
-      transition: opacity 5s ease-in-out;
+      visibility: hidden;
+      -webkit-transition: visibility 0s 5s, opacity 5s ease-in-out;
+      -moz-transition: visibility 0s 5s, opacity 5s ease-in-out;
+      -ms-transition: visibility 0s 5s, opacity 5s ease-in-out;
+      -o-transition: visibility 0s 5s, opacity 5s ease-in-out;
+      transition: visibility 0s 5s, opacity 5s ease-in-out;
     }
     .hidden {
       display: none;
