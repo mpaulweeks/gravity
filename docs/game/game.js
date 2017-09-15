@@ -8,7 +8,7 @@ function NewGame(pattern, ringm, hero, pm, vm){
 
     hero.processInput();
     ringm.step();
-    pm.step();
+    pm.step(vm.getVortexes());
     vm.step();
     pattern.step();
 

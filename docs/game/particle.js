@@ -22,17 +22,26 @@ function NewParticle(origin, angleStart, angleRange){
     };
   }
 
-  function step(){
-    angle += (1 - 2*Math.random()) / 10;
+  function step(vortexes){
+    vortexes = vortexes || [];
+    var angleDelta = 0;
+    vortexes.forEach(function (v){
+      var grav = v.calcGravity(coord);
+      // do stuff
+    })
+
+    if (angleDelta === 0){
+      angleDelta = (1 - 2*Math.random()) / 10;
+    }
+    angle += angleDelta;
 
     // stays mostly in line with default angle
-    angle += (defaultAngle - angle) / 10;
+    // angleDelta += (defaultAngle - angle) / 10;
 
     vector = {
       dx: speed * Math.cos(angle),
       dy: speed * Math.sin(angle),
     };
-
     coord.x = coord.x + vector.dx;
     coord.y = coord.y + vector.dy;
   }
@@ -90,13 +99,13 @@ function NewParticleManager(cvas){
     });
   }
 
-  function step(){
+  function step(vortexes){
     cSettings = cvas.getCanvasSettings();
     particles.forEach(function(p){
       if (p.isDead(cSettings)){
         p.reset();
       }
-      p.step();
+      p.step(vortexes);
     });
   }
 

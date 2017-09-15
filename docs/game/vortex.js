@@ -6,7 +6,7 @@ function NewVortex(origin){
 
   function step(){
     grad.step();
-    size += growthDelta;
+    // size += growthDelta;
   }
 
   function getDrawData(){
@@ -21,10 +21,19 @@ function NewVortex(origin){
     return size <= 0;
   }
 
+  function calcGravity(coord){
+    var dx = Math.abs(origin.x - coord.x);
+    var dy = Math.abs(origin.y - coord.y);
+    var distance = Math.sqrt(dx * dx + dy * dy);
+    var grav = Math.max(0, size - distance);
+    return grav;
+  }
+
   return {
     step: step,
     isDead: isDead,
     getDrawData: getDrawData,
+    calcGravity: calcGravity,
   };
 }
 
@@ -53,9 +62,14 @@ function NewVortexManager(cvas){
     });
   }
 
+  function getVortexes(){
+    return vortexes;
+  }
+
   return {
     newVortex: newVortex,
     draw: draw,
     step: step,
+    getVortexes: getVortexes,
   }
 }
