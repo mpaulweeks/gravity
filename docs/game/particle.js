@@ -1,5 +1,9 @@
 
 function NewParticle(origin, defaultAngle){
+  if (defaultAngle === undefined){
+    var ninety = Math.PI/2;
+    defaultAngle = ninety - (2*ninety*Math.random());
+  }
   var coord = {};
   var vector = {};
   var angle;
@@ -37,11 +41,12 @@ function NewParticle(origin, defaultAngle){
   }
 
   function isDead(cSettings){
+    var buffer = 100;
     return (
-      coord.x < 0 ||
-      coord.y < 0 ||
-      coord.x > cSettings.canvasW ||
-      coord.y > cSettings.canvasH
+      coord.x < 0 - buffer ||
+      coord.y < 0 - buffer ||
+      coord.x > cSettings.canvasW + buffer ||
+      coord.y > cSettings.canvasH + buffer
     );
   }
 
@@ -73,7 +78,6 @@ function NewParticleManager(cvas){
         x: 0,
         y: canvasH/2,
       },
-      2 - (4*Math.random()),
     );
     particles.push(p);
     return p;
