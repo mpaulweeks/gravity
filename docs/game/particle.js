@@ -1,9 +1,6 @@
 
-function NewParticle(origin, defaultAngle){
-  if (defaultAngle === undefined){
-    var ninety = Math.PI/2;
-    defaultAngle = ninety - (2*ninety*Math.random());
-  }
+function NewParticle(origin, angleStart, angleRange){
+  var defaultAngle = angleStart + (angleRange - (2*angleRange*Math.random()));
   var coord = {};
   var vector = {};
   var angle;
@@ -75,9 +72,11 @@ function NewParticleManager(cvas){
     var {canvasW, canvasH} = cSettings;
     var p = NewParticle(
       {
-        x: 0,
+        x: canvasW/2,
         y: canvasH/2,
       },
+      0, Math.PI,
+      // Math.PI, Math.PI/2,
     );
     particles.push(p);
     return p;

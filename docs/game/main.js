@@ -5,7 +5,7 @@
   // var pattern = NewPattern(cvas.drawTilingSpikes, {centered: 1, numSlices: 4, sliceDifference: 2, groupWidth: 150, phaseDelta: 0, colorFloor: 80, colorRange: 80});
   var ringm = NewRingManager(cvas);
   var pm = NewParticleManager(cvas);
-  for (var i = 0; i < 100; i++){
+  for (var i = 0; i < 1000; i++){
     pm.newParticle();
   }
   var hero = NewHero(cvas);
