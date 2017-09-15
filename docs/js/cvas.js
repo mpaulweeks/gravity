@@ -260,12 +260,12 @@ function NewCanvas(){
   }
 
   function drawParticle(ptcle){
-    var pts = ptcle.getLine();
+    var line = ptcle.getLine();
     ctx.strokeStyle = "red";
     ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y);
-    ctx.lineTo(pts[1].x, pts[1].y);
-    ctx.lineWidth = 10;
+    ctx.moveTo(line.head.x, line.head.y);
+    ctx.lineTo(line.tail.x, line.tail.y);
+    ctx.lineWidth = line.thickness;
     ctx.stroke();
   }
 
