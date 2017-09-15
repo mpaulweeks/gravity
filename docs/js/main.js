@@ -3,7 +3,7 @@
   var raf;
   var cvas = NewCanvas();
   var patterns = NewRainbowPatterns(cvas);
-  var jukebox = NewJukebox([
+  NewJukebox([
     NewTrack(
       'song',
       'FIRSTAID_VibeWithYou.mp3',

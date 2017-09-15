@@ -39,6 +39,9 @@ function NewJukebox(tracks){
   var audioElm = document.createElement('audio');
   audioElm.setAttribute('loop', true);
   var jukeboxPlaying = getCookie(COOKIE_MUTE) != "true";
+  if (window.location.href.includes("file://")){
+    jukeboxPlaying = false;
+  }
   var infoElm = document.getElementById('jukebox');
   infoElm.innerHTML = `
       <div>you are currently listening to</div>
