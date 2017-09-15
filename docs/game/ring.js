@@ -29,7 +29,6 @@ function NewRing(coord, maxRadius, grad){
   }
 
   return Object.assign(self, {
-    getGradient: getGradient,
     gradientModifier: gradientModifier,
     getOuter: getOuter,
     getInner: getInner,
