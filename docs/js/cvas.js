@@ -96,7 +96,7 @@ function NewCanvas(){
       y: Math.floor(canvasH/2),
     }
     var origin = hero.calcOrigin(center);
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "green";
     ctx.beginPath();
     ctx.arc(origin.x, origin.y, 10, 0, 2*Math.PI);
     ctx.closePath();
@@ -269,6 +269,11 @@ function NewCanvas(){
     ctx.stroke();
   }
 
+  function drawVortex(vortex){
+    // todo
+    console.log('draw vortex');
+  }
+
   return {
     elm: canvas,
     getCanvasSettings: getCanvasSettings,
@@ -279,6 +284,7 @@ function NewCanvas(){
     drawTilingSpikes: drawTilingSpikes,
     drawRing: drawRing,
     drawParticle: drawParticle,
+    drawVortex: drawVortex,
     drawHero: drawHero,
   };
 }

@@ -8,6 +8,7 @@
   for (var i = 0; i < 1000; i++){
     pm.newParticle();
   }
+  var vm = NewVortexManager(cvas);
   var hero = NewHero(cvas);
 
   document.body.onkeydown = function(e){
@@ -17,9 +18,10 @@
     hero.inputBuffer[e.keyCode] = false;
   }
   canvas.addEventListener('click', function(e) {
-    ringm.newRing(cvas.getMousePos(e), 300);
+    // ringm.newRing(cvas.getMousePos(e), 300);
+    vm.newVortex(cvas.getMousePos(e));
   });
 
-  NewGame(pattern, ringm, hero, pm).init();
-  NewGraphics(pattern, ringm, hero, pm).init();
+  NewGame(pattern, ringm, hero, pm, vm).init();
+  NewGraphics(pattern, ringm, hero, pm, vm).init();
 })();
