@@ -1,5 +1,5 @@
 
-function NewGame(pattern, ringm, hero){
+function NewGame(pattern, ringm, hero, pm){
   var fps = 60;
   var timeoutTarget = Math.floor(1000/fps);
 
@@ -8,6 +8,7 @@ function NewGame(pattern, ringm, hero){
 
     hero.processInput();
     ringm.step();
+    pm.step();
     pattern.step();
 
     var end = new Date();

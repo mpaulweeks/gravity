@@ -259,6 +259,16 @@ function NewCanvas(){
     ctx.stroke();
   }
 
+  function drawParticle(ptcle){
+    var pts = ptcle.getLine();
+    ctx.strokeStyle = "red";
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    ctx.lineTo(pts[1].x, pts[1].y);
+    ctx.lineWidth = 10;
+    ctx.stroke();
+  }
+
   return {
     elm: canvas,
     getCanvasSettings: getCanvasSettings,
@@ -268,6 +278,7 @@ function NewCanvas(){
     drawCircle: drawCircle,
     drawTilingSpikes: drawTilingSpikes,
     drawRing: drawRing,
+    drawParticle: drawParticle,
     drawHero: drawHero,
   };
 }
