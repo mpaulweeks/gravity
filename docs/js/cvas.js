@@ -250,7 +250,7 @@ function NewCanvas(){
       ring.origin.x, ring.origin.y, ring.getInner(),
       ring.origin.x, ring.origin.y, ring.getOuter()
     );
-    ring.gradientModifier(gradient);
+    ring.gradientModifier()(gradient);
 
     ctx.beginPath();
     ctx.arc(ring.origin.x, ring.origin.y, ring.getInner(), 0, 2*Math.PI);

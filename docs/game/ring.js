@@ -1,24 +1,14 @@
 
-function NewRing(coord, maxRadius){
+function NewRing(coord, maxRadius, grad){
   var self = {};
   self.origin = coord;
   self.maxRadius = maxRadius;
   self.radius = 50;
   self.width = 50;
-  var rGrad = NewGradientModifier();
+  var gSettings = NewSettings();
 
-  function getGradient(r){
-    var progress = (r / self.maxRadius);
-    var c = 255;
-    var a = (1 - progress).toFixed(2) - 0.2;
-    return `rgba(${c},${c},${c},${a})`;
-  }
-
-  function gradientModifier(g){
-    return rGrad.rainbow(g, 1);
-    // g.addColorStop(0, getGradient(getInner()));
-    // g.addColorStop(1, getGradient(getOuter()));
-    // return g;
+  function gradientModifier(){
+    return grad.rainbowSeries(gSettings)[0];
   }
 
   function getOuter(){
@@ -30,7 +20,6 @@ function NewRing(coord, maxRadius){
   }
 
   function step(){
-    rGrad.step();
     self.radius += 5;
     return self.radius >= self.maxRadius;
   }
@@ -51,9 +40,10 @@ function NewRing(coord, maxRadius){
 
 function NewRingManager(cvas){
   var rings = [];
+  var grad = NewGradientModifier();
 
   function newRing(coord, maxRadius){
-    var r = NewRing(coord, maxRadius);
+    var r = NewRing(coord, maxRadius, grad);
     rings.push(r);
     return r;
   }
@@ -65,6 +55,8 @@ function NewRingManager(cvas){
   }
 
   function step(){
+    grad.step();
+
     var shouldCheck = false;
     rings.forEach(function(ring){
       shouldCheck = shouldCheck || ring.step();
