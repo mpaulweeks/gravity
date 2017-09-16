@@ -1,16 +1,16 @@
 
-function NewGame(pattern, ringm, hero, pm, vm){
+function NewGame(deps){
   var fps = 60;
   var timeoutTarget = Math.floor(1000/fps);
 
   function theLoop(){
     var start = new Date();
 
-    hero.processInput();
-    ringm.step();
-    pm.step(vm.getVortexes());
-    vm.step();
-    pattern.step();
+    deps.hero.processInput();
+    deps.ringm.step();
+    deps.pm.step(deps.vm.getVortexes());
+    deps.vm.step();
+    deps.pattern.step();
 
     var end = new Date();
     var msElapsed = end - start;

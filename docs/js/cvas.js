@@ -270,8 +270,33 @@ function NewCanvas(){
   }
 
   function drawVortex(vortex){
-    // todo
-    console.log('draw vortex');
+    var {
+      coord,
+      size,
+      pull,
+      percentDead,
+      gradientModifier,
+    } = vortex.getDrawData();
+
+    ctx.beginPath();
+    ctx.arc(coord.x, coord.y, pull, 0, 2*Math.PI);
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+    var percentWhite = Math.floor(255*Math.pow(percentDead, 4));
+    var colorStr = `rgba(${percentWhite},${percentWhite},${percentWhite},0.5)`;
+    ctx.fillStyle = colorStr;
+    ctx.fill();
+
+    var gradient = ctx.createRadialGradient(
+      coord.x, coord.y, 0,
+      coord.x, coord.y, size,
+    );
+    gradientModifier(gradient);
+    ctx.beginPath();
+    ctx.arc(coord.x, coord.y, size, 0, 2*Math.PI);
+    ctx.fillStyle = gradient;
+    ctx.fill();
   }
 
   return {

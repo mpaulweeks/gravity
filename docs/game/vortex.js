@@ -1,24 +1,33 @@
 
 function NewVortex(origin){
   var grad = NewGradientModifier();
-  var size = 100;
-  var growthDelta = -1.5;
+  var settings = NewSettings();
+  var maxSize = 200;
+  var size = maxSize;
+  var drawSize = 20;
+  var deathSize = maxSize/2;
+  var growthDelta = -0.1;
 
   function step(){
     grad.step();
-    // size += growthDelta;
   }
 
   function getDrawData(){
     return {
       coord: origin,
-      size: Math.floor(size),
+      size: Math.floor(drawSize),
+      pull: Math.floor(size),
+      percentDead: (maxSize - size) / deathSize,
       gradientModifier: grad.rainbowSeries(settings)[0],
     };
   }
 
+  function eat(){
+    size += growthDelta;
+  }
+
   function isDead(){
-    return size <= 0;
+    return size <= deathSize;
   }
 
   function calcGravity(coord){
@@ -26,10 +35,15 @@ function NewVortex(origin){
     var dy = Math.abs(origin.y - coord.y);
     var distance = Math.sqrt(dx * dx + dy * dy);
     var grav = Math.max(0, size - distance);
-    return grav;
+    return {
+      grav: grav / size,
+      inCore: distance <= drawSize,
+    };
   }
 
   return {
+    coord: origin,
+    eat: eat,
     step: step,
     isDead: isDead,
     getDrawData: getDrawData,

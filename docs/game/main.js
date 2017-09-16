@@ -1,7 +1,8 @@
 
 (function (){
   var cvas = NewCanvas();
-  var pattern = NewPattern(cvas.drawCircle, {centered: 1, phaseDelta: 0, colorFloor: 80, colorRange: 80});
+  var pattern = NewPattern(cvas.drawCircle, {centered: 1, phaseDelta: 0, colorFloor: 0, colorRange: 60});
+  // var pattern = NewPattern(cvas.drawCircle, {centered: 1, phaseDelta: 0, colorFloor: 80, colorRange: 80});
   // var pattern = NewPattern(cvas.drawTilingSpikes, {centered: 1, numSlices: 4, sliceDifference: 2, groupWidth: 150, phaseDelta: 0, colorFloor: 80, colorRange: 80});
   var ringm = NewRingManager(cvas);
   var pm = NewParticleManager(cvas);
@@ -18,10 +19,18 @@
     hero.inputBuffer[e.keyCode] = false;
   }
   canvas.addEventListener('click', function(e) {
-    // ringm.newRing(cvas.getMousePos(e), 300);
-    vm.newVortex(cvas.getMousePos(e));
+    var coord = cvas.getMousePos(e);
+    // ringm.newRing(coord, 300);
+    vm.newVortex(coord);
   });
 
-  NewGame(pattern, ringm, hero, pm, vm).init();
-  NewGraphics(pattern, ringm, hero, pm, vm).init();
+  var deps = {
+    pattern: pattern,
+    ringm: ringm,
+    hero: hero,
+    pm: pm,
+    vm: vm,
+  };
+  NewGame(deps).init();
+  NewGraphics(deps).init();
 })();

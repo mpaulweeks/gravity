@@ -1,12 +1,12 @@
 
-function NewGraphics(pattern, ringm, hero, pm, vm){
+function NewGraphics(deps){
   var raf;
   function draw(){
-    pattern.draw();
-    ringm.draw();
-    pm.draw();
-    vm.draw();
-    hero.draw();
+    deps.pattern.draw();
+    deps.ringm.draw();
+    deps.vm.draw();
+    deps.pm.draw();
+    // deps.hero.draw();
 
     raf = window.requestAnimationFrame(draw);
   }
