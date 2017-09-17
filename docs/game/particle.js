@@ -118,7 +118,7 @@ function NewParticleManager(cvas){
   function newParticle(){
     var cSettings = cvas.getCanvasSettings();
     var angleStart = 0;
-    var angleDiff = Math.PI;
+    var angleRange = Math.PI;
     var defaultAngle = angleStart + (angleRange - (2*angleRange*Math.random()));
     var p = NewParticle({
       cSettings: cSettings,
@@ -127,7 +127,7 @@ function NewParticleManager(cvas){
         y: cSettings.canvasH/2,
       },
       defaultAngle: defaultAngle,
-    );
+    });
     particles.push(p);
     return p;
   }

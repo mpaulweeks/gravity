@@ -269,7 +269,7 @@ function NewCanvas(){
     ctx.stroke();
   }
 
-  function drawVortex(vortex){
+  function drawVortexBackground(vortex){
     var {
       coord,
       size,
@@ -283,10 +283,22 @@ function NewCanvas(){
     ctx.lineWidth = 3;
     ctx.strokeStyle = 'white';
     ctx.stroke();
+    var percentAlpha = (Math.pow(percentDead, 2) + 0.5).toFixed(2);
+    // var colorStr = `rgba(255,255,255,${percentAlpha})`;
     var percentWhite = Math.floor(255*Math.pow(percentDead, 4));
-    var colorStr = `rgba(${percentWhite},${percentWhite},${percentWhite},0.5)`;
+    var colorStr = `rgba(${percentWhite},${percentWhite},${percentWhite},1)`;
     ctx.fillStyle = colorStr;
     ctx.fill();
+  }
+
+  function drawVortexCore(vortex){
+    var {
+      coord,
+      size,
+      pull,
+      percentDead,
+      gradientModifier,
+    } = vortex.getDrawData();
 
     var gradient = ctx.createRadialGradient(
       coord.x, coord.y, 0,
@@ -309,7 +321,8 @@ function NewCanvas(){
     drawTilingSpikes: drawTilingSpikes,
     drawRing: drawRing,
     drawParticle: drawParticle,
-    drawVortex: drawVortex,
+    drawVortexBackground: drawVortexBackground,
+    drawVortexCore: drawVortexCore,
     drawHero: drawHero,
   };
 }

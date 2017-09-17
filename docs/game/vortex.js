@@ -60,10 +60,18 @@ function NewVortexManager(cvas){
     return v;
   }
 
-  function draw(){
+  function drawBackgrounds(){
     vortexes.forEach(function(v){
       if (!v.isDead()){
-        cvas.drawVortex(v);
+        cvas.drawVortexBackground(v);
+      }
+    });
+  }
+
+  function drawCores(){
+    vortexes.forEach(function(v){
+      if (!v.isDead()){
+        cvas.drawVortexCore(v);
       }
     });
   }
@@ -82,7 +90,8 @@ function NewVortexManager(cvas){
 
   return {
     newVortex: newVortex,
-    draw: draw,
+    drawBackgrounds: drawBackgrounds,
+    drawCores: drawCores,
     step: step,
     getVortexes: getVortexes,
   }
