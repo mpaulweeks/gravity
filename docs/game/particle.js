@@ -50,6 +50,7 @@ function NewParticle(cSettings, origin, angleStart, angleRange){
     }
 
     var angleDelta = null;
+    var bestGrav = 0;
     if (distanceFromOrigin() > 50) {
       free = true;
     }
@@ -64,12 +65,19 @@ function NewParticle(cSettings, origin, angleStart, angleRange){
           v.eat();
           return;
         }
-        var dx = v.coord.x - coord.x;
-        var dy = v.coord.y - coord.y;
-        var trueAngle = Math.atan2(dy, dx);
-        var gravAngle = (trueAngle - angle) * grav;
-        if (angleDelta === null || Math.abs(gravAngle) > Math.abs(angleDelta)){
-          angleDelta = gravAngle;
+        if (angleDelta === null || grav > bestGrav) {
+          bestGrav = grav;
+          var dx = v.coord.x - coord.x;
+          var dy = v.coord.y - coord.y;
+          var vortexAngle = Math.atan2(dy, dx);
+          var angleDiff = vortexAngle - angle;
+          while (angleDiff < 0){ // coerce angleDiff to positive
+            angleDiff += 2 * Math.PI;
+          }
+          while (angleDiff > Math.PI){ // change angleDiff to shortest delta
+            angleDiff -= 2 * Math.PI;
+          }
+          angleDelta = angleDiff * grav;
         }
       });
     }
