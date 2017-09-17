@@ -31,7 +31,6 @@ function NewCanvas(){
   function setMousePos(evt){
     currMouse = getMousePos(evt);
   }
-  document.onmousemove = setMousePos;
 
   function getCanvasSettings(){
     var canvasW = document.body.clientWidth; //document.width is obsolete

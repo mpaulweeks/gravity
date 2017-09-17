@@ -90,6 +90,7 @@
   }
 
   // settings/patterns
+  cvas.addEventListener('mousemove', cvas.setMousePos);
   cvas.addEventListener('click', nextPattern);
   Array.from(document.getElementsByClassName('scroll-info')).forEach(function (elm){
     elm.addEventListener('click', nextPattern);
