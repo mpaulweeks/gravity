@@ -272,14 +272,14 @@ function NewCanvas(){
   function drawVortexBackground(vortex){
     var {
       coord,
-      size,
-      pull,
+      coreSize,
+      ringSize,
       percentDead,
       gradientModifier,
     } = vortex.getDrawData();
 
     ctx.beginPath();
-    ctx.arc(coord.x, coord.y, pull, 0, 2*Math.PI);
+    ctx.arc(coord.x, coord.y, ringSize, 0, 2*Math.PI);
     ctx.lineWidth = 3;
     ctx.strokeStyle = 'white';
     ctx.stroke();
@@ -292,19 +292,19 @@ function NewCanvas(){
   function drawVortexCore(vortex){
     var {
       coord,
-      size,
-      pull,
+      coreSize,
+      ringSize,
       percentDead,
       gradientModifier,
     } = vortex.getDrawData();
 
     var gradient = ctx.createRadialGradient(
       coord.x, coord.y, 0,
-      coord.x, coord.y, size,
+      coord.x, coord.y, coreSize,
     );
     gradientModifier(gradient);
     ctx.beginPath();
-    ctx.arc(coord.x, coord.y, size, 0, 2*Math.PI);
+    ctx.arc(coord.x, coord.y, coreSize, 0, 2*Math.PI);
     ctx.fillStyle = gradient;
     ctx.fill();
   }

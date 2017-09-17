@@ -49,7 +49,7 @@ function NewParticle(pSettings){
     }
     if (free){
       (vortexes || []).forEach(function (v){
-        if (v.isDead()){
+        if (v.isInactive()){
           return;
         }
         var {grav, inCore} = v.calcGravity(coord);

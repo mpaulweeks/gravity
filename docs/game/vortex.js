@@ -1,50 +1,74 @@
 
-function NewVortex(origin){
+function NewVortex(vSettings){
+  var { coord, isHold } = vSettings;
   var grad = NewGradientModifier();
   var settings = NewSettings();
-  var maxSize = 200;
-  var size = maxSize;
-  var drawSize = 20;
-  var deathSize = maxSize/2;
+  var coreSize = 20;
+  var deathSize = coreSize * 4;
+  var ringSize = 200;
+  if (isHold){
+    ringSize = deathSize + 1;
+  }
+  var maxSize = ringSize;
   var growthDelta = -0.1;
 
   function step(){
     grad.step();
+    if (isHold){
+      ringSize += 3;
+      if (ringSize > maxSize){
+        maxSize = ringSize;
+      }
+    };
+  }
+
+  function birth(){
+    isHold = false;
   }
 
   function getDrawData(){
+    var percentDead = 1 - ((ringSize - deathSize) / (maxSize - deathSize));
+    if (isHold){
+      percentDead = 0;
+    }
     return {
-      coord: origin,
-      size: Math.floor(drawSize),
-      pull: Math.floor(size),
-      percentDead: (maxSize - size) / deathSize,
+      coord: coord,
+      coreSize: coreSize,
+      ringSize: Math.floor(ringSize),
+      percentDead: percentDead,
       gradientModifier: grad.rainbowSeries(settings)[0],
     };
   }
 
   function eat(){
-    size += growthDelta;
+    ringSize += growthDelta;
+  }
+
+  function isInactive(){
+    return isHold || isDead();
   }
 
   function isDead(){
-    return size <= deathSize;
+    return !isHold && ringSize <= deathSize;
   }
 
-  function calcGravity(coord){
-    var dx = Math.abs(origin.x - coord.x);
-    var dy = Math.abs(origin.y - coord.y);
+  function calcGravity(pcoord){
+    var dx = Math.abs(coord.x - pcoord.x);
+    var dy = Math.abs(coord.y - pcoord.y);
     var distance = Math.sqrt(dx * dx + dy * dy);
-    var grav = Math.max(0, size - distance);
+    var grav = Math.max(0, ringSize - distance);
     return {
-      grav: grav / size,
-      inCore: distance <= drawSize,
+      grav: grav / ringSize,
+      inCore: distance <= coreSize,
     };
   }
 
   return {
-    coord: origin,
+    coord: coord,
     eat: eat,
     step: step,
+    birth: birth,
+    isInactive: isInactive,
     isDead: isDead,
     getDrawData: getDrawData,
     calcGravity: calcGravity,
@@ -55,7 +79,19 @@ function NewVortexManager(cvas){
   var vortexes = [];
 
   function newVortex(coord){
-    var v = NewVortex(coord);
+    var v = NewVortex({
+      coord: coord,
+      isHold: false,
+    });
+    vortexes.push(v);
+    return v;
+  }
+
+  function newHoldVortex(coord){
+    var v = NewVortex({
+      coord: coord,
+      isHold: true,
+    });
     vortexes.push(v);
     return v;
   }
@@ -90,6 +126,7 @@ function NewVortexManager(cvas){
 
   return {
     newVortex: newVortex,
+    newHoldVortex: newHoldVortex,
     drawBackgrounds: drawBackgrounds,
     drawCores: drawCores,
     step: step,

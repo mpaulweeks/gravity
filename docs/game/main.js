@@ -18,11 +18,23 @@
   document.body.onkeyup = function(e){
     hero.inputBuffer[e.keyCode] = false;
   }
-  cvas.addEventListener('click', function(e) {
-    var coord = cvas.getMousePos(e);
-    // ringm.newRing(coord, 300);
-    vm.newVortex(coord);
+
+  var mouseHoldVortex = null;
+  cvas.addEventListener('mousedown', function(e) {
+    if (mouseHoldVortex === null){
+      var coord = cvas.getMousePos(e);
+      mouseHoldVortex = vm.newHoldVortex(coord);
+    }
   });
+  cvas.addEventListener('mouseup', function(e) {
+    if (mouseHoldVortex !== null){
+      mouseHoldVortex.birth();
+      mouseHoldVortex = null;
+    }
+  });
+  // cvas.addEventListener('click', function(e) {
+  //   vm.newVortex(coord);
+  // });
 
   var deps = {
     pattern: pattern,
