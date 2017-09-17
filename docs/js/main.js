@@ -106,7 +106,7 @@
   document.getElementById('fullScreen').addEventListener('click', cvas.goFullScreen);
 
   // mobile
-  document.addEventListener('touchmove', function(e) {
+  cvas.addEventListener('touchmove', function(e) {
     e.preventDefault();
     var touch = e.touches[0];
     cvas.setMousePos(touch);
