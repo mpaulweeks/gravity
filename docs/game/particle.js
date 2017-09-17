@@ -1,11 +1,6 @@
 
-function NewParticle(cSettings, origin, angleStart, angleRange){
-  function fixAngle(a){
-    return a;
-    // return ((2*Math.PI) + a) % (2*Math.PI) + (2*Math.PI);
-  }
-
-  var defaultAngle = fixAngle(angleStart + (angleRange - (2*angleRange*Math.random())));
+function NewParticle(pSettings){
+  var { cSettings, origin, defaultAngle } = pSettings;
   var coord = {};
   var vector = {};
   var angle;
@@ -14,6 +9,7 @@ function NewParticle(cSettings, origin, angleStart, angleRange){
   var speed = 5 + Math.floor(10*Math.random());
   var lineLength = 10/speed;
   var thickness = 5 + Math.floor(5*Math.random());
+  var deathBuffer = 100;
 
   function getLine(){
     return {
@@ -36,14 +32,11 @@ function NewParticle(cSettings, origin, angleStart, angleRange){
   }
 
   function step(vortexes){
-    vortexes = vortexes || [];
-
-    var buffer = 100;
     dead = dead || (
-      coord.x < 0 - buffer ||
-      coord.y < 0 - buffer ||
-      coord.x > cSettings.canvasW + buffer ||
-      coord.y > cSettings.canvasH + buffer
+      coord.x < 0 - deathBuffer ||
+      coord.y < 0 - deathBuffer ||
+      coord.x > cSettings.canvasW + deathBuffer ||
+      coord.y > cSettings.canvasH + deathBuffer
     );
     if (dead){
       return;
@@ -55,7 +48,7 @@ function NewParticle(cSettings, origin, angleStart, angleRange){
       free = true;
     }
     if (free){
-      vortexes.forEach(function (v){
+      (vortexes || []).forEach(function (v){
         if (v.isDead()){
           return;
         }
@@ -65,7 +58,7 @@ function NewParticle(cSettings, origin, angleStart, angleRange){
           v.eat();
           return;
         }
-        if (angleDelta === null || grav > bestGrav) {
+        if (grav > bestGrav) {
           bestGrav = grav;
           var dx = v.coord.x - coord.x;
           var dy = v.coord.y - coord.y;
@@ -87,10 +80,6 @@ function NewParticle(cSettings, origin, angleStart, angleRange){
     } else {
       angle += angleDelta;
     }
-
-    angle = fixAngle(angle);
-
-    // stays mostly in line with default angle
 
     vector = {
       dx: speed * Math.cos(angle),
@@ -128,16 +117,16 @@ function NewParticleManager(cvas){
 
   function newParticle(){
     var cSettings = cvas.getCanvasSettings();
-    var p = NewParticle(
-      cSettings,
-      {
+    var angleStart = 0;
+    var angleDiff = Math.PI;
+    var defaultAngle = angleStart + (angleRange - (2*angleRange*Math.random()));
+    var p = NewParticle({
+      cSettings: cSettings,
+      origin: {
         x: cSettings.canvasW/2,
         y: cSettings.canvasH/2,
       },
-          // try to keep angles in simple range?
-      0, Math.PI,
-      // Math.PI, Math.PI*2,
-      // Math.PI, Math.PI/2,
+      defaultAngle: defaultAngle,
     );
     particles.push(p);
     return p;
