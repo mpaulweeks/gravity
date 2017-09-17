@@ -5,21 +5,23 @@ function NewVortex(vSettings){
   var settings = NewSettings();
   var coreSize = 20;
   var deathSize = coreSize * 4;
+  var minSize = deathSize + 1;
   var ringSize = 200;
-  if (isHold){
-    ringSize = deathSize + 1;
-  }
   var maxSize = ringSize;
   var growthDelta = -0.1;
 
   function step(){
     grad.step();
-    if (isHold){
-      ringSize += 3;
-      if (ringSize > maxSize){
-        maxSize = ringSize;
-      }
-    };
+  }
+
+  function updateRing(mcoord){
+    var dx = coord.x - mcoord.x;
+    var dy = coord.y - mcoord.y;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance > minSize){
+      ringSize = distance;
+      maxSize = ringSize;
+    }
   }
 
   function birth(){
@@ -53,8 +55,8 @@ function NewVortex(vSettings){
   }
 
   function calcGravity(pcoord){
-    var dx = Math.abs(coord.x - pcoord.x);
-    var dy = Math.abs(coord.y - pcoord.y);
+    var dx = coord.x - pcoord.x;
+    var dy = coord.y - pcoord.y;
     var distance = Math.sqrt(dx * dx + dy * dy);
     var grav = Math.max(0, ringSize - distance);
     return {
@@ -67,6 +69,7 @@ function NewVortex(vSettings){
     coord: coord,
     eat: eat,
     step: step,
+    updateRing: updateRing,
     birth: birth,
     isInactive: isInactive,
     isDead: isDead,

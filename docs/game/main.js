@@ -32,6 +32,12 @@
       mouseHoldVortex = null;
     }
   }
+  function mouseMove(e){
+    if (mouseHoldVortex !== null){
+      var coord = cvas.getMousePos(e);
+      mouseHoldVortex.updateRing(e);
+    }
+  }
   function mouseClick(e){
     var coord = cvas.getMousePos(e);
     vm.newVortex(coord);
@@ -48,6 +54,7 @@
   } else {
     cvas.addEventListener('mousedown', mouseDown);
     cvas.addEventListener('mouseup', mouseUp);
+    cvas.addEventListener('mousemove', mouseMove);
   }
 
   var deps = {
