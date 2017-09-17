@@ -18,7 +18,7 @@
   document.body.onkeyup = function(e){
     hero.inputBuffer[e.keyCode] = false;
   }
-  canvas.addEventListener('click', function(e) {
+  cvas.addEventListener('click', function(e) {
     var coord = cvas.getMousePos(e);
     // ringm.newRing(coord, 300);
     vm.newVortex(coord);
