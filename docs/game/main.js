@@ -35,12 +35,18 @@
   function mouseMove(e){
     if (mouseHoldVortex !== null){
       var coord = cvas.getMousePos(e);
-      mouseHoldVortex.updateRing(e);
+      mouseHoldVortex.updateRing(coord);
     }
   }
   function mouseClick(e){
     var coord = cvas.getMousePos(e);
     vm.newVortex(coord);
+  }
+  function mobileMouse(func){
+    return function(e){
+      e.preventDefault();
+      return func(e.touches[0]);
+    }
   }
 
   function mobileAndTabletcheck() {
@@ -50,7 +56,9 @@
     return check;
   };
   if (mobileAndTabletcheck()){
-    cvas.addEventListener('click', mouseClick);
+    cvas.addEventListener('touchstart', mobileMouse(mouseDown));
+    cvas.addEventListener('touchend', mobileMouse(mouseUp));
+    cvas.addEventListener('touchmove', mobileMouse(mouseMove));
   } else {
     cvas.addEventListener('mousedown', mouseDown);
     cvas.addEventListener('mouseup', mouseUp);
