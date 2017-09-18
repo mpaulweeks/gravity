@@ -1,14 +1,8 @@
 
-function NewGraphics(deps){
+function NewGraphics(drawFunc){
   var raf;
   function draw(){
-    deps.pattern.draw();
-    deps.vm.drawBackgrounds();
-    deps.ringm.draw();
-    deps.pm.draw();
-    deps.vm.drawCores();
-    // deps.hero.draw();
-
+    drawFunc();
     raf = window.requestAnimationFrame(draw);
   }
   return {

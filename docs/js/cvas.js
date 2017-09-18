@@ -46,6 +46,18 @@ function NewCanvas(){
     }
   }
 
+  function drawStats(stats){
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,160,20 + 10*stats.length);
+    ctx.fillStyle = "white";
+    for (var i = 0; i < stats.length; i++){
+      ctx.fillText(stats[i][1], 10, 20 + 10*i);
+      ctx.fillText(stats[i][0], 60, 20 + 10*i);
+    }
+  }
+
+  // draw funcs
+
   function drawCircle(gms, settings){
     var {canvasW, canvasH} = getCanvasSettings();
     var origin = currMouse;
@@ -314,6 +326,7 @@ function NewCanvas(){
     goFullScreen: goFullScreen,
     setMousePos: setMousePos,
     getMousePos: getMousePos,
+    drawStats: drawStats,
     drawCircle: drawCircle,
     drawTilingSpikes: drawTilingSpikes,
     drawRing: drawRing,

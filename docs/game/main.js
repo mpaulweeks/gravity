@@ -65,13 +65,24 @@
     cvas.addEventListener('mousemove', mouseMove);
   }
 
-  var deps = {
-    pattern: pattern,
-    ringm: ringm,
-    hero: hero,
-    pm: pm,
-    vm: vm,
-  };
-  NewGame(deps).init();
-  NewGraphics(deps).init();
+  var debug = true;
+
+  var game = NewGame(60, function(){
+    hero.processInput();
+    ringm.step();
+    pm.step(vm.getVortexes());
+    vm.step();
+    pattern.step();
+  })
+  game.init();
+  NewGraphics(function (){
+    pattern.draw();
+    vm.drawBackgrounds();
+    ringm.draw();
+    pm.draw();
+    vm.drawCores();
+    if (debug){
+      cvas.drawStats(game.getStats());
+    }
+  }).init();
 })();

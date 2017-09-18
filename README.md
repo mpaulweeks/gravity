@@ -3,6 +3,7 @@
 misc visualizations
 
 ## vibe todo
+- add fps, maybe switch to logic vs draw for consistent fps on mobile?
 - customize option for grid
 - non-square grids
   - fixed pixel width vs fixed number of rows/cols
