@@ -1,6 +1,5 @@
 
 (function (){
-  var raf;
   var cvas = NewCanvas();
   var patterns = NewRainbowPatterns(cvas);
   NewJukebox([
@@ -23,12 +22,6 @@
       'https://itunes.apple.com/us/album/woman/id1151157609'
     ),
   ]);
-
-  function draw(){
-    patterns.get().draw();
-    patterns.get().step();
-    raf = window.requestAnimationFrame(draw);
-  }
 
   var settingsElms = [];
   function NewSetting(name, iStart, iEnd, iDelta, description, isBoolean){
@@ -128,6 +121,16 @@
     document.getElementById(infoId).classList.add('fade-out');
   }, 0);
 
-  draw();
+  var looper = NewLoop();
+  looper.logicLoop(60, function(self){
+    patterns.get().step();
+  });
+  looper.drawLoop(function (self){
+    patterns.get().draw();
+    if (self.isDebug){
+      var stats = self.getStats();
+      cvas.drawStats(stats);
+    }
+  });
   fillSettings();
 })();

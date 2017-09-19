@@ -58,9 +58,11 @@ function NewLoop(){
   }
 
   var self = {
+    isDebug: window.location.href.includes("?d=1"),
+    getStats: getStats,
+  };
+  return {
     logicLoop: logicLoop,
     drawLoop: drawLoop,
-    getStats: getStats,
-  }
-  return self;
+  };
 }

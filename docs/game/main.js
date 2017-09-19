@@ -65,8 +65,6 @@
     cvas.addEventListener('mousemove', mouseMove);
   }
 
-  var debug = true;
-
   var looper = NewLoop();
   looper.logicLoop(60, function(self){
     hero.processInput();
@@ -81,7 +79,7 @@
     ringm.draw();
     pm.draw();
     vm.drawCores();
-    if (debug){
+    if (self.isDebug){
       var stats = self.getStats();
       cvas.drawStats(stats);
     }
