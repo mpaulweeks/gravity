@@ -48,11 +48,11 @@ function NewCanvas(){
 
   function drawStats(stats){
     ctx.fillStyle = "black";
-    ctx.fillRect(0,0,160,20 + 10*stats.length);
+    ctx.fillRect(0,0,160, 16 + 10*stats.length);
     ctx.fillStyle = "white";
     for (var i = 0; i < stats.length; i++){
-      ctx.fillText(stats[i][1], 10, 20 + 10*i);
-      ctx.fillText(stats[i][0], 60, 20 + 10*i);
+      ctx.fillText(stats[i][1], 10, 16 + 10*i);
+      ctx.fillText(stats[i][0], 60, 16 + 10*i);
     }
   }
 

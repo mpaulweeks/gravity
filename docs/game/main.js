@@ -67,22 +67,23 @@
 
   var debug = true;
 
-  var game = NewGame(60, function(){
+  var looper = NewLoop();
+  looper.logicLoop(60, function(self){
     hero.processInput();
     ringm.step();
     pm.step(vm.getVortexes());
     vm.step();
     pattern.step();
-  })
-  game.init();
-  NewGraphics(function (){
+  });
+  looper.drawLoop(function (self){
     pattern.draw();
     vm.drawBackgrounds();
     ringm.draw();
     pm.draw();
     vm.drawCores();
     if (debug){
-      cvas.drawStats(game.getStats());
+      var stats = self.getStats();
+      cvas.drawStats(stats);
     }
-  }).init();
+  });
 })();
