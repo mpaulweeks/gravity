@@ -5,10 +5,12 @@ function NewLoop(){
   var logicFrames = 0;
   var targetFPS;
   var targetTimeout;
+  var recentLogicTime;
   var recentLogicDelay;
   function logicLoop(fps, loopFunc){
     targetFPS = fps;
     targetTimeout = Math.floor(1000/targetFPS);
+    recentLogicTime = 0;
     recentLogicDelay = 0;
     function innerFunc(){
       logicFrames += 1;
@@ -17,13 +19,10 @@ function NewLoop(){
       loopFunc(self);
 
       var loopEnd = new Date();
-      var msElapsed = loopEnd - loopStart;
-      var delay = targetTimeout - msElapsed;
-      recentLogicDelay = delay;
-      if (delay < 1){
-        delay = 1;
-      }
-      window.setTimeout(innerFunc, delay - 1);
+      recentLogicTime = loopEnd - loopStart;
+      recentLogicDelay = targetTimeout - recentLogicTime;
+
+      window.setTimeout(innerFunc, Math.max(0, recentLogicDelay - 1));
     }
     innerFunc();
   }
@@ -54,9 +53,9 @@ function NewLoop(){
       ['logicFrames', logicFrames],
       ['targetFPS', targetFPS],
       ['actualFPS', logicFPS],
+      ['recentLogicTime', recentLogicTime],
       ['targetTimeout', targetTimeout],
       ['actualTimeout', recentLogicDelay],
-      ['logicRuntime', targetTimeout - recentLogicDelay],
       ['', ''],
       ['drawFrames', drawFrames],
       ['drawFPS', drawFPS],
