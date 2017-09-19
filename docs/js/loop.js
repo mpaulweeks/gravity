@@ -5,11 +5,11 @@ function NewLoop(){
   var logicFrames = 0;
   var targetFPS;
   var targetTimeout;
-  var recentDelay;
+  var recentLogicDelay;
   function logicLoop(fps, loopFunc){
     targetFPS = fps;
     targetTimeout = Math.floor(1000/targetFPS);
-    recentDelay = 0;
+    recentLogicDelay = 0;
     function innerFunc(){
       logicFrames += 1;
       var loopStart = new Date();
@@ -19,7 +19,7 @@ function NewLoop(){
       var loopEnd = new Date();
       var msElapsed = loopEnd - loopStart;
       var delay = targetTimeout - msElapsed;
-      recentDelay = delay;
+      recentLogicDelay = delay;
       if (delay < 1){
         delay = 1;
       }
@@ -29,12 +29,18 @@ function NewLoop(){
   }
 
   var drawFrames = 0;
+  var recentDrawTime;
   var requestFrame;
   function drawLoop(loopFunc){
+    recentDrawDelay = 0;
     function innerFunc(){
       drawFrames += 1;
+      var loopStart = new Date();
 
       loopFunc(self);
+
+      var loopEnd = new Date();
+      recentDrawTime = loopEnd - loopStart;
 
       requestFrame = window.requestAnimationFrame(innerFunc);
     }
@@ -49,11 +55,12 @@ function NewLoop(){
       ['targetFPS', targetFPS],
       ['actualFPS', logicFPS],
       ['targetTimeout', targetTimeout],
-      ['actualTimeout', recentDelay],
-      ['logicRuntime', targetTimeout - recentDelay],
+      ['actualTimeout', recentLogicDelay],
+      ['logicRuntime', targetTimeout - recentLogicDelay],
       ['', ''],
       ['drawFrames', drawFrames],
       ['drawFPS', drawFPS],
+      ['recentDrawTime', recentDrawTime],
     ];
   }
 
