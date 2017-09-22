@@ -65,8 +65,8 @@
     cvas.addEventListener('mousemove', mouseMove);
   }
 
-  var looper = NewLoop();
-  looper.logicLoop(60, function(self){
+  var looper = NewLoop(60);
+  looper.logicLoop(function(self){
     hero.processInput();
     ringm.step();
     pm.step(vm.getVortexes());

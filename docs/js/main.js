@@ -121,8 +121,8 @@
     document.getElementById(infoId).classList.add('fade-out');
   }, 0);
 
-  var looper = NewLoop();
-  looper.logicLoop(60, function(self){
+  var looper = NewLoop(60);
+  looper.logicLoop(function(self){
     patterns.get().step();
   });
   looper.drawLoop(function (self){

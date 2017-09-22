@@ -1,20 +1,29 @@
 
-function NewLoop(){
+function NewLoop(fps){
   var objStart = new Date();
+  var targetFPS = fps;
 
   var logicFrames = 0;
-  var targetFPS;
   var targetTimeout;
   var recentLogicTime;
   var recentLogicDelay;
-  function logicLoop(fps, loopFunc){
-    targetFPS = fps;
+  var recentLogicSecondDuration;
+  var recentLogicFPSStart;
+  function logicLoop(loopFunc){
     targetTimeout = Math.floor(1000/targetFPS);
     recentLogicTime = 0;
     recentLogicDelay = 0;
+    recentLogicSecondDuration = 0;
+    recentLogicFPSStart = new Date();
     function innerFunc(){
       logicFrames += 1;
       var loopStart = new Date();
+
+      if (logicFrames === targetFPS){
+        logicFrames = 0;
+        recentLogicSecondDuration = loopStart - recentLogicFPSStart;
+        recentLogicFPSStart = loopStart;
+      }
 
       loopFunc(self);
 
@@ -29,12 +38,22 @@ function NewLoop(){
 
   var drawFrames = 0;
   var recentDrawTime;
+  var recentDrawSecondDuration;
+  var recentDrawFPSStart;
   var requestFrame;
   function drawLoop(loopFunc){
     recentDrawDelay = 0;
+    recentDrawSecondDuration = 0;
+    recentDrawFPSStart = new Date();
     function innerFunc(){
       drawFrames += 1;
       var loopStart = new Date();
+
+      if (drawFrames === targetFPS){
+        drawFrames = 0;
+        recentDrawSecondDuration = loopStart - recentDrawFPSStart;
+        recentDrawFPSStart = loopStart;
+      }
 
       loopFunc(self);
 
@@ -47,8 +66,8 @@ function NewLoop(){
   }
 
   function getStats(){
-    var logicFPS = ((logicFrames * 1000)/(new Date() - objStart)).toFixed(2);
-    var drawFPS = ((drawFrames * 1000)/(new Date() - objStart)).toFixed(2);
+    var logicFPS = ((targetFPS * 1000)/(recentLogicSecondDuration)).toFixed(2);
+    var drawFPS = ((targetFPS * 1000)/(recentDrawSecondDuration)).toFixed(2);
     return [
       ['logicFrames', logicFrames],
       ['targetFPS', targetFPS],
