@@ -3,12 +3,10 @@
 misc visualizations
 
 ## vibe todo
-- add fps, maybe switch to logic vs draw for consistent fps on mobile?
-- customize option for grid
+- fps still weird on slow computers, look into workers?
+  - https://johnresig.com/blog/web-workers/
 - non-square grids
   - fixed pixel width vs fixed number of rows/cols
-- grid that follows mouse
-  - absolute and/or relative?
 
 ## game todo
 - dodging game
