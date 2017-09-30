@@ -1,6 +1,6 @@
 # gravity
 
-misc visualizations
+misc visualizations using static files
 
 ## vibe todo
 - fps still weird on slow computers, look into workers?
