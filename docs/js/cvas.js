@@ -311,7 +311,7 @@ function NewCanvas(){
 
     var gradient = ctx.createRadialGradient(
       coord.x, coord.y, 0,
-      coord.x, coord.y, coreSize,
+      coord.x, coord.y, coreSize
     );
     gradientModifier(gradient);
     ctx.beginPath();
