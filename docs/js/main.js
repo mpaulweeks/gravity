@@ -1,5 +1,6 @@
 
 (function (){
+  var infoPopup = document.getElementById('info-popup');
   var cvas = NewCanvas();
   var patterns = NewRainbowPatterns(cvas);
   NewJukebox([
@@ -92,9 +93,8 @@
   // settings/patterns
   cvas.addEventListener('mousemove', cvas.setMousePos);
   cvas.addEventListener('click', nextPattern);
-  Array.from(document.getElementsByClassName('scroll-info')).forEach(function (elm){
-    elm.addEventListener('click', nextPattern);
-  });
+  infoPopup.addEventListener('mousemove', cvas.setMousePos);
+  infoPopup.addEventListener('click', nextPattern);
   document.body.onkeyup = function(e){
     if(e.keyCode == 39){ // right key
       nextPattern();
