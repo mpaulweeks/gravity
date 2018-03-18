@@ -45,9 +45,11 @@ function NewJukebox(tracks){
   var infoElm = document.getElementById('jukebox');
   infoElm.innerHTML = `
       <div>you are currently listening to</div>
-      <div><a id="jukebox-url" target="_blank" href=""></a></div>
-      <button id="jukebox-toggle" >loading...</button>
-      <button id="jukebox-next">next track</button>
+      <div class="song-title"><a id="jukebox-url" target="_blank" href=""></a></div>
+      <div>
+        <button id="jukebox-toggle" >loading...</button>
+        <button id="jukebox-next">next track</button>
+      </div>
   `;
   var urlElm = document.getElementById('jukebox-url');
   var toggleElm = document.getElementById('jukebox-toggle');

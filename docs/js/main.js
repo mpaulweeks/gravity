@@ -34,9 +34,16 @@
       }
       optionsHTML += `<option value="${i}">${display}</option>`;
     }
-    var newDiv =  document.createElement("div");
-    newDiv.innerHTML = `<label>${description}</label><select class="settings-select" id="${idSelector}">${optionsHTML}</select>`;
-    document.getElementById('settings').appendChild(newDiv);
+    var newDiv = `
+      <div class="settings-row">
+        <div class="settings-left">
+          <label>${description}</label>
+        </div>
+        <div class="settings-right">
+          <select class="settings-select" id="${idSelector}">${optionsHTML}</select>
+        </div>
+      </div>`;
+    document.getElementById('settings').innerHTML += newDiv;
 
     var elm = document.getElementById(idSelector);
     function getInt(){

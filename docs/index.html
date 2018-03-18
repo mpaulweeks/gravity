@@ -32,20 +32,43 @@
     #footer {
       border-top: 10px solid white;
       text-align: center;
+      font-size: 18px;
     }
     .row {
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding: 10px 0px;
+    }
+    .row:first-child {
+      padding-top: 20px;
+    }
+    .row:last-child {
+      padding-bottom: 20px;
     }
     .subtitle {
       text-decoration: underline;
     }
-    #settings {
+    .settings-row {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      font-size: 16px;
+    }
+    .settings-left {
+      width: calc(50% - 10px);
+      padding: 0px 5px;
       text-align: right;
-      transform: translate(-45%, 0%);
+    }
+    .settings-right {
+      width: calc(50% - 10px);
+      padding: 0px 5px;
+      text-align: left;
     }
     .settings-select {
-      margin-left: 5px;
+      width: 50px;
+    }
+    .song-title {
+      padding: 5px 0px;
     }
     @keyframes disappear {
       0% {
