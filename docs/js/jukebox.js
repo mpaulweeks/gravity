@@ -38,7 +38,7 @@ function NewJukebox(tracks){
   var index = 0;
   var audioElm = document.createElement('audio');
   audioElm.setAttribute('loop', true);
-  var jukeboxPlaying = getCookie(COOKIE_MUTE) != "true";
+  var jukeboxPlaying = getCookie(COOKIE_MUTE) === "false";
   if (window.location.href.includes("file://")){
     jukeboxPlaying = false;
   }
