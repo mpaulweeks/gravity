@@ -47,29 +47,45 @@
     .settings-select {
       margin-left: 5px;
     }
+    @keyframes disappear {
+      0% {
+        opacity: 1
+      }
+      99% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
     .scroll-info {
-      cursor: none;
-      opacity: 1;
-      background-color: #000000;
-      z-index: 99;
-      border: 3px solid #FFFFFF;
-      text-align: center;
       position: fixed;
       top: 30px;
       left: 50%;
       transform: translate(-50%, 0%);
-      padding: 20px;
+
+      text-align: center;
+      font-size: 16px;
+      cursor: none;
+      background-color: #000000;
+      border: 3px solid #FFFFFF;
       border-radius: 20px;
+      padding: 20px;
+
+      animation-name: disappear;
+      animation-duration: 5s;
+      animation-timing-function: linear;
+      animation-delay: 3s;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
     }
-    .fade-out {
-      display: inline;
-      opacity: 0;
-      visibility: hidden;
-      -webkit-transition: visibility 0s 5s, opacity 5s ease-in-out;
-      -moz-transition: visibility 0s 5s, opacity 5s ease-in-out;
-      -ms-transition: visibility 0s 5s, opacity 5s ease-in-out;
-      -o-transition: visibility 0s 5s, opacity 5s ease-in-out;
-      transition: visibility 0s 5s, opacity 5s ease-in-out;
+    .scroll-info div {
+      padding: 5px 0px;
+    }
+    .vibe-title {
+      font-size: 18px;
+      font-weight: bold;
     }
     .hidden {
       display: none;
@@ -77,21 +93,38 @@
   </style>
 </head>
 <body>
-  <div id="info-desktop" class="scroll-info hidden">
-    MOVE YOUR MOUSE
-    <br/>
-    CLICK ANYWHERE
-    <br/>
-    SEE WHAT HAPPENS
-    <br/>
-    <br/>
-    SCROLL DOWN FOR MORE INFO
-  </div>
-  <div id="info-mobile" class="scroll-info hidden">
-    TAP TO CHANGE PATTERN
-    <br/>
-    <br/>
-    DRAG TO CHANGE FOCUS
+  <div class="scroll-info">
+    <div>
+      WELCOME TO
+      <div class="vibe-title">
+        🌈 VIBE 🌈
+      </div>
+    </div>
+    <div id="info-desktop" class="hidden">
+      <div>
+        MOVE YOUR MOUSE
+        <br/>
+        CLICK ANYWHERE
+        <br/>
+        SEE WHAT HAPPENS
+      </div>
+      <div>
+        SCROLL DOWN TO TURN ON MUSIC
+        <br/>
+        + OTHER OPTIONS
+      </div>
+    </div>
+    <div id="info-mobile" class="hidden">
+      <div>
+        TAP TO CHANGE PATTERN
+      </div>
+      <div>
+        DRAG TO CHANGE FOCUS
+      </div>
+      <div>
+        OPEN ON DESKTOP FOR MORE OPTIONS
+      </div>
+    </div>
   </div>
   <div id="main"><canvas id="canvas"></canvas></div>
   <div id="footer">

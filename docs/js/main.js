@@ -116,10 +116,6 @@
     document.getElementById('footer').style.display = "none";
   }
   document.getElementById(infoId).classList.remove('hidden');
-  setTimeout(function(){
-    // need timeout so HTML can render between steps
-    document.getElementById(infoId).classList.add('fade-out');
-  }, 0);
 
   var looper = NewLoop(60);
   looper.logicLoop(function(self){
