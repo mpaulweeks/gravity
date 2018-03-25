@@ -106,13 +106,36 @@ class Canvas {
     // ctx.strokeStyle = 'rgb(192, 210, 0)';
     ctx.strokeStyle = 'rgb(252, 253, 117)';
     ctx.lineWidth = 1;
+    const cubeHeight = dy * 2 + edge;
+    const cubeWidth = dx * 2;
 
-    // for (let x = 0; x < canvasW + 100; x += dx*4) {
-    //   for (let y = 0; y < canvasH + 100; y += dy*2 + edge) {
-    for (let x = canvasW; x > -100; x -= dx*4) {
-      for (let y = canvasH; y > -100; y -= dy*2 + edge) {
-        this.drawHex(edge, x, y, dx, dy, bgc);
-        this.drawHex(edge, x + dx*2, y - edge, dx, dy, bgc);
+    if (window.S === 1) {
+      for (let x = canvasW; x > -100; x -= cubeWidth * 2) {
+        for (let y = canvasH; y > -100; y -= cubeHeight) {
+          this.drawHex(edge, x, y, dx, dy, bgc);
+          this.drawHex(edge, x + cubeWidth, y - edge, dx, dy, bgc);
+        }
+      }
+    } else if (window.S === 2) {
+      for (let y = 0 - canvasW; y < canvasH; y += cubeHeight) {
+        for (let x = 0 - dx; x < canvasW; x += cubeWidth) {
+          const diagX = canvasW - x;
+          const diagY = y + (edge * x / cubeWidth);
+          this.drawHex(edge, diagX, diagY, dx, dy, bgc);
+        }
+      }
+    } else {
+      let flip = false;
+      for (let y = 0 - cubeHeight; y < canvasH; y += cubeHeight / 2) {
+        flip = !flip;
+        for (let x = 0 - dx; x <= canvasW; x += cubeWidth * 2) {
+          let cx = x;
+          let cy = y;
+          if (flip) {
+            cx += dx*2;
+          }
+          this.drawHex(edge, cx, cy, dx, dy, bgc);
+        }
       }
     }
   }
