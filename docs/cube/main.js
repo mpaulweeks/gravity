@@ -5,7 +5,6 @@ class Canvas {
     this.canvas = document.getElementById('canvas');
     this.canvas.addEventListener('mousemove', evt => {
       self.setMousePos(evt);
-      self.draw();
     });
     this.getCanvasSettings();
     this.ctx = this.canvas.getContext('2d');
@@ -13,6 +12,14 @@ class Canvas {
       x: Math.floor(this.canvas.width/2),
       y: Math.floor(this.canvas.height/2),
     };
+    this.mouseSpeed = 0;
+    this.slowDown()
+  }
+  slowDown() {
+    const self = this
+    this.mouseSpeed *= 0.9;
+    this.draw();
+    setTimeout(() => self.slowDown(), 1000/16);
   }
   getCanvasSettings() {
     const { canvas } = this;
@@ -39,7 +46,10 @@ class Canvas {
     };
   }
   setMousePos(evt){
+    const oldMouse = this.currMouse;
     this.currMouse = this.getMousePos(evt);
+    const distance = Math.sqrt(Math.pow(oldMouse.x - this.currMouse.x, 2) + Math.pow(oldMouse.y - this.currMouse.y, 2));
+    this.mouseSpeed = Math.min(2, this.mouseSpeed + distance / 50);
   }
   getDistanceFromMouse(x, y){
     const { currMouse } = this;
@@ -50,9 +60,11 @@ class Canvas {
     const cx = x;
     const cy = y + dy + edge/2;
     const distance = this.getDistanceFromMouse(cx, cy);
-    const ratio = (edge * 4 - distance) / (edge * 3);
+    const detectDistance = edge * 4;
+    const multiplier = this.mouseSpeed;
+    const ratio = (detectDistance - distance) / detectDistance;
     if (ratio > 0){
-      const coeff = 1 + ratio;
+      const coeff = 1 + (ratio * multiplier);
       edge *= coeff;
       dx *= coeff;
       dy *= coeff;
