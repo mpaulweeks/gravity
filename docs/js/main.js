@@ -5,19 +5,19 @@
   var patterns = NewRainbowPatterns(cvas);
   NewJukebox([
     NewTrack(
-      'song',
+      'https://s3.amazonaws.com/vibe.mpaulweeks.com/music',
       'FIRSTAID_VibeWithYou.mp3',
       'FIRSTAID - Vibe With You',
       'https://first-aid.bandcamp.com/album/nostalgic-falling-down'
     ),
     NewTrack(
-      'song',
+      'https://s3.amazonaws.com/vibe.mpaulweeks.com/music',
       'TheFatRat_TimeLapse.mp3',
       'TheFatRat - Time Lapse',
       'https://lnk.to/tfrtimelapse'
     ),
     NewTrack(
-      'song',
+      'https://s3.amazonaws.com/vibe.mpaulweeks.com/music',
       'Justice_CloseCall.mp3',
       'Justice - Close Call',
       'https://itunes.apple.com/us/album/woman/id1151157609'
