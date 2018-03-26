@@ -19,8 +19,8 @@ function NewPattern(canvasFunc, s){
 
 function NewRainbowPatterns(cvas){
   var patterns = [
-    NewPattern(cvas.drawTilingSpikes, {numSlices: 1, sliceDifference: 0, groupWidth: 950}),
     NewPattern(cvas.drawTilingSpikes, {numSlices: 3, sliceDifference: 5, groupWidth: 150}),
+    NewPattern(cvas.drawTilingSpikes, {numSlices: 1, sliceDifference: 0, groupWidth: 950}),
     NewPattern(cvas.drawTilingSpikes, {numSlices: 4, sliceDifference: 2, groupWidth: 150}),
     NewPattern(cvas.drawTilingSpikes, {numSlices: 32, sliceDifference: 1, groupWidth: 500}),
     NewPattern(cvas.drawTilingSpikes, {numSlices: 16, sliceDifference: 8, groupWidth: 500}),
