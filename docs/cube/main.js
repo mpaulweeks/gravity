@@ -1,4 +1,14 @@
 
+class Measurements {
+  constructor(edge) {
+    this.edge = edge;
+    this.dx = this.edge * Math.sin(Math.PI/3);
+    this.dy = this.edge * Math.cos(Math.PI/3);
+    this.cubeHeight = this.dy * 2 + this.edge;
+    this.cubeWidth = this.dx * 2;
+  }
+}
+
 class Canvas {
   constructor() {
     const self = this;
@@ -8,12 +18,17 @@ class Canvas {
     });
     this.getCanvasSettings();
     this.ctx = this.canvas.getContext('2d');
+
+    this.m = new Measurements(20);
+    this.bgc = 'rgb(38,57,131)';
+    this.fgc = 'rgb(252, 253, 117)';
+
     this.currMouse = {
       x: Math.floor(this.canvas.width/2),
       y: Math.floor(this.canvas.height/2),
     };
     this.mouseSpeed = 0;
-    this.slowDown()
+    this.slowDown();
   }
   slowDown() {
     const self = this
@@ -55,8 +70,8 @@ class Canvas {
     const { currMouse } = this;
     return Math.sqrt(Math.pow(currMouse.x - x, 2) + Math.pow(currMouse.y - y, 2));
   }
-  drawHex(edge, x, y, dx, dy, bgc) {
-    const { ctx } = this
+  drawHex(x, y) {
+    let { edge, dx, dy } = this.m;
     const cx = x;
     const cy = y + dy + edge/2;
     const distance = this.getDistanceFromMouse(cx, cy);
@@ -72,6 +87,7 @@ class Canvas {
       y = cy - dy - edge/2;
     }
 
+    const { ctx } = this
     ctx.beginPath();
     let tx = x;
     let ty = y;
@@ -93,7 +109,6 @@ class Canvas {
     ty -= dy;
     ctx.lineTo(tx, ty);
     ctx.stroke();
-    ctx.fillStyle = bgc;
     ctx.fill();
 
     ctx.moveTo(cx, cy);
@@ -107,50 +122,23 @@ class Canvas {
     ctx.stroke();
   }
   draw() {
-    const { ctx } = this;
+    const { ctx, bgc, fgc } = this;
     const { canvasW, canvasH } = this.getCanvasSettings();
-    const bgc = 'rgb(38,57,131)';
     ctx.fillStyle = bgc;
-    ctx.fillRect(0, 0, canvasW, canvasH);
-    const edge = 20;
-    const dx = edge * Math.sin(Math.PI/3);
-    const dy = edge * Math.cos(Math.PI/3);
-    // ctx.strokeStyle = 'rgb(192, 210, 0)';
-    ctx.strokeStyle = 'rgb(252, 253, 117)';
+    ctx.strokeStyle = fgc;
     ctx.lineWidth = 1;
-    const cubeHeight = dy * 2 + edge;
-    const cubeWidth = dx * 2;
+    ctx.fillRect(0, 0, canvasW, canvasH);
 
-    if (window.S === 1) {
-      for (let x = canvasW; x > -100; x -= cubeWidth * 2) {
-        for (let y = canvasH; y > -100; y -= cubeHeight) {
-          this.drawHex(edge, x, y, dx, dy, bgc);
-          this.drawHex(edge, x + cubeWidth, y - edge, dx, dy, bgc);
-        }
-      }
-    } else if (window.S === 2) {
-      for (let y = 0 - canvasW; y < canvasH; y += cubeHeight) {
-        for (let x = 0 - dx; x < canvasW; x += cubeWidth) {
-          const diagX = canvasW - x;
-          const diagY = y + (edge * x / cubeWidth);
-          this.drawHex(edge, diagX, diagY, dx, dy, bgc);
-        }
-      }
-    } else {
-      let flip = false;
-      for (let y = 0 - cubeHeight; y < canvasH; y += cubeHeight / 2) {
-        flip = !flip;
-        for (let x = 0 - dx; x <= canvasW; x += cubeWidth * 2) {
-          let cx = x;
-          let cy = y;
-          if (flip) {
-            cx += dx*2;
-          }
-          this.drawHex(edge, cx, cy, dx, dy, bgc);
-        }
+    const { cubeHeight, cubeWidth } = this.m;
+    let flip = false;
+    for (let y = 0 - cubeHeight; y < canvasH; y += cubeHeight / 2) {
+      flip = !flip;
+      const xOffset = flip ? cubeWidth : 0;
+      for (let x = 0 - cubeWidth; x <= canvasW; x += cubeWidth * 2) {
+        this.drawHex(x + xOffset, y);
       }
     }
   }
 }
 
-new Canvas().draw()
+new Canvas();
