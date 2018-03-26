@@ -9,6 +9,40 @@ class Measurements {
   }
 }
 
+class MouseTracker {
+  constructor() {
+    this.lookup = {};
+  }
+  toKey(x, y) {
+    return `${x},${y}`;
+  }
+  getByGrid(x, y) {
+    const key = this.toKey(x, y);
+    return this.lookup[key] || 0;
+  }
+  setByGrid(x, y, value) {
+    const key = this.toKey(x, y);
+    this.lookup[key] = value;
+    console.log(this.lookup)
+  }
+  setByCoord(measurement, speed, cx, cy) {
+    const { cubeHeight, cubeWidth } = measurement;
+    const x = Math.floor(cx / cubeWidth);
+    const y = Math.floor(cy / (cubeHeight / 2));
+    for (var xi = -1; xi <= 1; xi++) {
+      for (var yi = -1; yi <= 1; yi++) {
+        const value = (xi === 0 && yi === 0) ? speed : speed * 0.5;
+        this.setByGrid(x + xi, y + yi, value);
+      }
+    }
+  }
+  slowDown(factor) {
+    for (let key in this.lookup) {
+      this.lookup[key] *= factor;
+    }
+  }
+}
+
 class Canvas {
   constructor() {
     const self = this;
@@ -23,16 +57,20 @@ class Canvas {
     this.bgc = 'rgb(38,57,131)';
     this.fgc = 'rgb(252, 253, 117)';
 
+    this.mt = new MouseTracker();
     this.currMouse = {
       x: Math.floor(this.canvas.width/2),
       y: Math.floor(this.canvas.height/2),
     };
     this.mouseSpeed = 0;
+    this.mouseHits = {};
     this.slowDown();
   }
   slowDown() {
     const self = this
-    this.mouseSpeed *= 0.9;
+    const factor = 0.9;
+    this.mouseSpeed *= factor;
+    this.mt.slowDown(factor);
     this.draw();
     setTimeout(() => self.slowDown(), 1000/16);
   }
@@ -65,21 +103,22 @@ class Canvas {
     this.currMouse = this.getMousePos(evt);
     const distance = Math.sqrt(Math.pow(oldMouse.x - this.currMouse.x, 2) + Math.pow(oldMouse.y - this.currMouse.y, 2));
     this.mouseSpeed = Math.min(2, this.mouseSpeed + distance / 50);
+    this.mt.setByCoord(this.m, this.mouseSpeed, this.currMouse.x, this.currMouse.y);
   }
   getDistanceFromMouse(x, y){
     const { currMouse } = this;
     return Math.sqrt(Math.pow(currMouse.x - x, 2) + Math.pow(currMouse.y - y, 2));
   }
-  drawHex(x, y) {
-    let { edge, dx, dy } = this.m;
+  drawHex(xGrid, yGrid) {
+    let { edge, dx, dy, cubeWidth, cubeHeight } = this.m;
+    let x = xGrid * cubeWidth;
+    let y = yGrid * cubeHeight / 2;
+
     const cx = x;
     const cy = y + dy + edge/2;
-    const distance = this.getDistanceFromMouse(cx, cy);
-    const detectDistance = edge * 4;
-    const multiplier = this.mouseSpeed;
-    const ratio = (detectDistance - distance) / detectDistance;
-    if (ratio > 0){
-      const coeff = 1 + (ratio * multiplier);
+    const speed = this.mt.getByGrid(xGrid, yGrid);
+    if (speed > 0){
+      const coeff = 1 + speed;
       edge *= coeff;
       dx *= coeff;
       dy *= coeff;
@@ -130,12 +169,12 @@ class Canvas {
     ctx.fillRect(0, 0, canvasW, canvasH);
 
     const { cubeHeight, cubeWidth } = this.m;
-    let flip = false;
-    for (let y = 0 - cubeHeight; y < canvasH; y += cubeHeight / 2) {
-      flip = !flip;
-      const xOffset = flip ? cubeWidth : 0;
-      for (let x = 0 - cubeWidth; x <= canvasW; x += cubeWidth * 2) {
-        this.drawHex(x + xOffset, y);
+    const cubesY = 1 + (canvasH / (cubeHeight / 2));
+    const cubesX = 1 + (canvasW / cubeWidth);
+    for (let y = -1; y < cubesY; y += 1) {
+      const xOffset = y % 2 === 0 ? 1 : 0;
+      for (let x = -1 + xOffset; x <= cubesX; x += 2) {
+        this.drawHex(x, y);
       }
     }
   }
