@@ -23,14 +23,13 @@ class MouseTracker {
   setByGrid(x, y, value) {
     const key = this.toKey(x, y);
     this.lookup[key] = value;
-    console.log(this.lookup)
   }
   setByCoord(measurement, speed, cx, cy) {
     const { cubeHeight, cubeWidth } = measurement;
     const x = Math.floor(cx / cubeWidth);
     const y = Math.floor(cy / (cubeHeight / 2));
     for (var xi = -1; xi <= 1; xi++) {
-      for (var yi = -1; yi <= 1; yi++) {
+      for (var yi = -1; yi <= 1; yi++) { // todo maybe +/- 2
         const value = (xi === 0 && yi === 0) ? speed : speed * 0.5;
         this.setByGrid(x + xi, y + yi, value);
       }
@@ -47,11 +46,17 @@ class Canvas {
   constructor() {
     const self = this;
     this.canvas = document.getElementById('canvas');
+    this.getCanvasSettings();
+    this.ctx = this.canvas.getContext('2d');
+
     this.canvas.addEventListener('mousemove', evt => {
       self.setMousePos(evt);
     });
-    this.getCanvasSettings();
-    this.ctx = this.canvas.getContext('2d');
+    this.canvas.addEventListener('touchmove', evt => {
+      evt.preventDefault();
+      var touch = evt.touches[0];
+      self.setMousePos(touch);
+    }, false);
 
     this.m = new Measurements(20);
     this.bgc = 'rgb(38,57,131)';
@@ -68,11 +73,11 @@ class Canvas {
   }
   slowDown() {
     const self = this
-    const factor = 0.9;
+    const factor = 0.95;
     this.mouseSpeed *= factor;
     this.mt.slowDown(factor);
     this.draw();
-    setTimeout(() => self.slowDown(), 1000/16);
+    setTimeout(() => self.slowDown(), 1000/30);
   }
   getCanvasSettings() {
     const { canvas } = this;

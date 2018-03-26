@@ -1,5 +1,11 @@
 <head>
-  <script src="main.js" defer></script>
+  <title>CUBE</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link rel="icon" type="image/icon" href="../preview.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="main.js?version=20180325" defer></script>
+
   <style type="text/css">
     body {
       margin: 0px auto;
@@ -10,90 +16,6 @@
     #main {
       cursor: none;
       height: 100%;
-    }
-    #footer {
-      border-top: 10px solid white;
-      text-align: center;
-      font-size: 18px;
-    }
-    .row {
-      padding: 10px 0px;
-    }
-    .row:first-child {
-      padding-top: 20px;
-    }
-    .row:last-child {
-      padding-bottom: 20px;
-    }
-    .subtitle {
-      text-decoration: underline;
-    }
-    .settings-row {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-
-      font-size: 16px;
-    }
-    .settings-left {
-      width: calc(50% - 10px);
-      padding: 0px 5px;
-      text-align: right;
-    }
-    .settings-right {
-      width: calc(50% - 10px);
-      padding: 0px 5px;
-      text-align: left;
-    }
-    .settings-select {
-      width: 50px;
-    }
-    .song-title {
-      padding: 5px 0px;
-    }
-    @keyframes disappear {
-      0% {
-        opacity: 1
-      }
-      99% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 0;
-        visibility: hidden;
-      }
-    }
-    .scroll-info {
-      position: fixed;
-      top: 30px;
-      left: 50%;
-      transform: translate(-50%, 0%);
-
-      text-align: center;
-      font-size: 16px;
-      cursor: none;
-      background-color: #000000;
-      border: 3px solid #FFFFFF;
-      border-radius: 20px;
-      padding: 20px;
-
-      animation-name: disappear;
-      animation-duration: 5s;
-      animation-timing-function: linear;
-      animation-delay: 3s;
-      animation-iteration-count: 1;
-      animation-fill-mode: forwards;
-    }
-    .scroll-info div {
-      padding: 5px 0px;
-    }
-    .vibe-title {
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .hidden {
-      display: none;
     }
   </style>
 </head>
