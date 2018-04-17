@@ -1,3 +1,9 @@
+## UPDATE April 2018
+
+Ported to React and further improved in a separate repo: https://github.com/mpaulweeks/vibe
+
+Keeping this repo as-is for reference / posterity
+
 # gravity
 
 misc visualizations using static files
